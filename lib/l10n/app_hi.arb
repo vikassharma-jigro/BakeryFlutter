@@ -1,0 +1,17 @@
+{
+  "member_id": "सदस्य आईडी",
+  "enter_id": "अपनी आईडी दर्ज करें",
+  "password": "पासवर्ड",
+  "enter_password": "अपना पासवर्ड दर्ज करें",
+  "login": "लॉगिन",
+
+  "hello_retailer": "नमस्ते, खुदरा विक्रेता",
+  "welcome_bakery": "आपकी बेकरी में आपका स्वागत है",
+  "pending_payments": "भुगतान रोकना",
+  "recent_orders": "हालिया आदेश",
+  "top_selling": "शीर्ष विक्रय",
+  "quick_actions": "त्वरित कार्रवाई",
+  "place_order": "नया ऑर्डर दें",
+  "view_history": "ऑर्डर इतिहास देखें",
+  "recent_activity": "हाल की गतिविधि"
+}
