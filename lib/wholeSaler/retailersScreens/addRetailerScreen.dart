@@ -395,7 +395,7 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
                       Colors.grey,
                       false,
                         inputFormatters: [
-                          LengthLimitingTextInputFormatter(15),
+                          LengthLimitingTextInputFormatter(16),
                         ]
                     ),
                   ],
@@ -681,6 +681,7 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
               
               CommonButton(text: "save_retailer".tr,
                 onPressed: () {
+                  String taxCode = textCodeController.text.trim();
                   if (shopNameController.text.isEmpty) {
                     ShowAlertDialog().showErrorAlert(
                         context, "Please Enter shop name");
@@ -722,16 +723,23 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
                     ShowAlertDialog().showErrorAlert(
                         context, "Please Enter state");
                     return;
-                  } else {
+                  }else if (textCodeController.text.isEmpty) {
+                    ShowAlertDialog().showErrorAlert(
+                        context, "Please Enter text code");
+                    return;
+                  }/*else if (!isValidTexcode(taxCode)) {
+                    ShowAlertDialog().showErrorAlert(
+                        context, "Invalid Texcode format");
+                    return;
+                  }*/ else {
                     authController.getAds(context: context,
                         password: passwordController.text,
-                        textCode: textCodeController.text,
                         email: mailController.text,address: {
                           "addressLine": addressController.text,"pincode": pincodeController.text,
                           "city": cityController.text,"state": stateController.text,"landmark":landmarkController.text,
                         },
-                        retailerDetails: {"shopName" : shopNameController.text, "alternatePhone":altPhoneController.text,
-                          "shopTiming":timerInputController.text,},
+                        retailerDetails: {"shopName" : shopNameController.text, "alternatePhone":(altPhoneController.text),
+                          "shopTiming":timerInputController.text,"textCode": textCodeController.text,},
                         department: "sales",
                         //joiningDate: timerInputController.text,
                         name: ownerNameController.text,phone: primaryPhoneController.text,
@@ -743,6 +751,11 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
                     ).then((value) {
 
                      Navigator.pop(context);
+                     // authController.getRetailerListApi(
+                     //   context: context,
+                     //   status: "",
+                     //   search: "",
+                     // );
                     },);
                   }
                 },
@@ -754,4 +767,12 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
       ),
     );
   }
+  bool isValidTexcode(String texcode) {
+    final RegExp texcodeRegex = RegExp(
+      r'^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$',
+    );
+    return texcodeRegex.hasMatch(texcode);
+  }
+
+
 }

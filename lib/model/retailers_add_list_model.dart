@@ -30,142 +30,162 @@ class RetailerListModel {
 
 class RetailerData {
   String? sId;
+  String? empId;
   String? name;
   String? email;
   String? role;
   String? department;
   String? status;
   int? phone;
-  String? address;
   String? createdBy;
   String? joiningDate;
   String? createdAt;
   String? updatedAt;
-  RetailerDetails? retailerDetails;
+  List<EmployeeDetails>? employeeDetails;
+  List<Addresses>? addresses;
 
   RetailerData(
       {this.sId,
+        this.empId,
         this.name,
         this.email,
         this.role,
         this.department,
         this.status,
         this.phone,
-        this.address,
         this.createdBy,
         this.joiningDate,
         this.createdAt,
         this.updatedAt,
-        this.retailerDetails});
+        this.employeeDetails,
+        this.addresses});
 
   RetailerData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    empId = json['empId'];
     name = json['name'];
     email = json['email'];
     role = json['role'];
     department = json['department'];
     status = json['status'];
     phone = json['phone'];
-    address = json['address'];
     createdBy = json['createdBy'];
     joiningDate = json['joiningDate'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    retailerDetails = json['retailerDetails'] != null
-        ? new RetailerDetails.fromJson(json['retailerDetails'])
-        : null;
+    if (json['employeeDetails'] != null) {
+      employeeDetails = <EmployeeDetails>[];
+      json['employeeDetails'].forEach((v) {
+        employeeDetails!.add(new EmployeeDetails.fromJson(v));
+      });
+    }
+    if (json['addresses'] != null) {
+      addresses = <Addresses>[];
+      json['addresses'].forEach((v) {
+        addresses!.add(new Addresses.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
+    data['empId'] = this.empId;
     data['name'] = this.name;
     data['email'] = this.email;
     data['role'] = this.role;
     data['department'] = this.department;
     data['status'] = this.status;
     data['phone'] = this.phone;
-    data['address'] = this.address;
     data['createdBy'] = this.createdBy;
     data['joiningDate'] = this.joiningDate;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    if (this.retailerDetails != null) {
-      data['retailerDetails'] = this.retailerDetails!.toJson();
+    if (this.employeeDetails != null) {
+      data['employeeDetails'] =
+          this.employeeDetails!.map((v) => v.toJson()).toList();
+    }
+    if (this.addresses != null) {
+      data['addresses'] = this.addresses!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class RetailerDetails {
-  String? sId;
-  String? employeeId;
+class EmployeeDetails {
   String? shopName;
-  String? city;
-  String? state;
-  String? pincode;
-  int? alternatePhone;
-  String? landmark;
-  String? gstNumber;
+  String? alternatePhone;
   String? shopTiming;
+  String? shopImage;
+  String? textCode;
   String? identityCardPhoto;
   String? textCodePhoto;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
 
-  RetailerDetails(
-      {this.sId,
-        this.employeeId,
-        this.shopName,
-        this.city,
-        this.state,
-        this.pincode,
+  EmployeeDetails(
+      {this.shopName,
         this.alternatePhone,
-        this.landmark,
-        this.gstNumber,
         this.shopTiming,
+        this.shopImage,
+        this.textCode,
         this.identityCardPhoto,
-        this.textCodePhoto,
-        this.createdAt,
-        this.updatedAt,
-        this.iV});
+        this.textCodePhoto});
 
-  RetailerDetails.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    employeeId = json['employeeId'];
+  EmployeeDetails.fromJson(Map<String, dynamic> json) {
     shopName = json['shopName'];
-    city = json['city'];
-    state = json['state'];
-    pincode = json['pincode'];
     alternatePhone = json['alternatePhone'];
-    landmark = json['landmark'];
-    gstNumber = json['gstNumber'];
     shopTiming = json['shopTiming'];
+    shopImage = json['shopImage'];
+    textCode = json['textCode'];
     identityCardPhoto = json['identityCardPhoto'];
     textCodePhoto = json['textCodePhoto'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['employeeId'] = this.employeeId;
     data['shopName'] = this.shopName;
+    data['alternatePhone'] = this.alternatePhone;
+    data['shopTiming'] = this.shopTiming;
+    data['shopImage'] = this.shopImage;
+    data['textCode'] = this.textCode;
+    data['identityCardPhoto'] = this.identityCardPhoto;
+    data['textCodePhoto'] = this.textCodePhoto;
+    return data;
+  }
+}
+
+class Addresses {
+  String? landmark;
+  String? addressLine;
+  String? city;
+  String? state;
+  String? pincode;
+  bool? isDefault;
+
+  Addresses(
+      {this.landmark,
+        this.addressLine,
+        this.city,
+        this.state,
+        this.pincode,
+        this.isDefault});
+
+  Addresses.fromJson(Map<String, dynamic> json) {
+    landmark = json['landmark'];
+    addressLine = json['addressLine'];
+    city = json['city'];
+    state = json['state'];
+    pincode = json['pincode'];
+    isDefault = json['isDefault'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['landmark'] = this.landmark;
+    data['addressLine'] = this.addressLine;
     data['city'] = this.city;
     data['state'] = this.state;
     data['pincode'] = this.pincode;
-    data['alternatePhone'] = this.alternatePhone;
-    data['landmark'] = this.landmark;
-    data['gstNumber'] = this.gstNumber;
-    data['shopTiming'] = this.shopTiming;
-    data['identityCardPhoto'] = this.identityCardPhoto;
-    data['textCodePhoto'] = this.textCodePhoto;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['__v'] = this.iV;
+    data['isDefault'] = this.isDefault;
     return data;
   }
 }

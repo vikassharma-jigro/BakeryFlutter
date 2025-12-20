@@ -8,6 +8,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../../app_utils/app_colors.dart';
 import '../../app_utils/font_family.dart';
+import '../../app_utils/shared_preferences.dart';
 import '../../auth_view/login_screen.dart';
 import '../../getx_controller/auth_controller.dart';
 import '../../main.dart';
@@ -26,7 +27,7 @@ class _ProfilescreenState extends State<Profilescreen> {
   @override
   void initState() {
     Future.microtask(() {
-      authController.getProfileApi(context: context,status: authController.authModel.value.employeeData?.sId);
+      authController.getProfileApi(context: context,status: sp?.getString(SpUtil.MEMBER_ID) ?? "");
     },);
     super.initState();
   }
@@ -53,327 +54,330 @@ class _ProfilescreenState extends State<Profilescreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(21),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(
-                            AppImages.imgIcon,
-                            width: 100,
-                            height: 100,
-                          ),
+      body: Obx(() {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(21),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          spreadRadius: 2,
+                          blurRadius: 4,
                         ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            text(
-                              authController.profileData.value.name??"",
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: FontFamily.interBold,
-                              textColor: dark1BrownColor,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.asset(
+                                AppImages.imgIcon,
+                                width: 100,
+                                height: 100,
+                              ),
                             ),
-                            text(
-                              authController.profileData.value.role??"",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              textColor: darkGreyColor,
+                            SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text(
+                                  authController.profileData.value.name??"",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: FontFamily.interBold,
+                                  textColor: dark1BrownColor,
+                                ),
+                                text(
+                                  authController.profileData.value.role??"",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  textColor: darkGreyColor,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
+                        SizedBox(height: 20),
 
-                    // Phone
-                    text(
-                      "phone_number".tr,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      textColor: darkGreyColor,
-                    ),
-                    text(
-                      authController.profileData.value.phone.toString()??"",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      textColor: dark1BrownColor,
-                    ),
-                    SizedBox(height: 10),
-
-                    // Phone
-                    text(
-                      "email_address".tr,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      textColor: darkGreyColor,
-                    ),
-                    text(
-                      authController.profileData.value.email??"",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      textColor: dark1BrownColor,
-                    ),
-                    SizedBox(height: 10),
-
-                    // Phone
-                    text(
-                      "gst_number".tr,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      textColor: darkGreyColor,
-                    ),
-                    text(
-                      authController.profileData.value.retailerDetails?.gstNumber??"",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      textColor: dark1BrownColor,
-                    ),
-                    SizedBox(height: 10),
-
-                    // Phone
-                    text(
-                      "business_address".tr,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      textColor: darkGreyColor,
-                    ),
-                    text(
-                      authController.profileData.value.address??"",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      textColor: dark1BrownColor,
-                    ),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              ),
-              SizedBox(height: 24),
-
-              text(
-                "account_settings".tr,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                textColor: dark1BrownColor,
-                fontFamily: FontFamily.interBold,
-              ),
-              SizedBox(height: 12),
-
-              Container(
-                padding: EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(21),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: (){
-                        Get.to(EditProfileScreen());
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.person, color: dark1BrownColor),
-                          SizedBox(width: 10),
-                          text(
-                            "edit_profile".tr,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: FontFamily.interSansMedium,
-                            textColor: dark1BrownColor,
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios_outlined, size: 20),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-
-                    // Row(
-                    //   children: [
-                    //     Icon(Icons.lock, color: dark1BrownColor),
-                    //     SizedBox(width: 10),
-                    //     text(
-                    //       "Change Password",
-                    //       fontSize: 18,
-                    //       fontWeight: FontWeight.w500,
-                    //       fontFamily: FontFamily.interBold,
-                    //       textColor: dark1BrownColor,
-                    //     ),
-                    //     Spacer(),
-                    //     Icon(Icons.arrow_forward_ios_outlined, size: 20),
-                    //   ],
-                    // ),
-                    // Divider(),
-                    SizedBox(height: 10,),
-                    InkWell(
-                      onTap: (){
-                        Get.to(NotificationScreen());
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.notifications, color: dark1BrownColor),
-                          SizedBox(width: 10),
-                          text(
-                            "notification_settings".tr,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: FontFamily.interSansMedium,
-                            textColor: dark1BrownColor,
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios_outlined, size: 20),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-
-                    // Row(
-                    //   children: [
-                    //     Icon(Icons.cloud, color: dark1BrownColor),
-                    //     SizedBox(width: 10),
-                    //     text(
-                    //       "cloud_backup".tr,
-                    //       fontSize: 18,
-                    //       fontWeight: FontWeight.w500,
-                    //       fontFamily: FontFamily.interBold,
-                    //       textColor: dark1BrownColor,
-                    //     ),
-                    //     Spacer(),
-                    //     Icon(Icons.arrow_forward_ios_outlined, size: 20),
-                    //   ],
-                    // ),
-                    // Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Icon(Icons.wifi, color: dark1BrownColor),
-                        SizedBox(width: 10),
+                        // Phone
                         text(
-                          "offline_status".tr,
+                          "phone_number".tr,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          textColor: darkGreyColor,
+                        ),
+                        text(
+                          authController.profileData.value.phone.toString()??"",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          fontFamily: FontFamily.interSansMedium,
                           textColor: dark1BrownColor,
                         ),
-                        Spacer(),
-                        Switch(
-                          value: isValue,
-                          activeColor: dark1BrownColor,
-                          inactiveThumbColor: white,
-                          onChanged: (value) {
-                            isValue = value!;
-                            setState(() {});
+                        SizedBox(height: 10),
+
+                        // Phone
+                        text(
+                          "email_address".tr,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          textColor: darkGreyColor,
+                        ),
+                        text(
+                          authController.profileData.value.email??"",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          textColor: dark1BrownColor,
+                        ),
+                        SizedBox(height: 10),
+
+                        // Phone
+                        text(
+                          "gst_number".tr,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          textColor: darkGreyColor,
+                        ),
+                        text(
+                          authController.profileData.value.retailerDetails?.gstNumber??"",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          textColor: dark1BrownColor,
+                        ),
+                        SizedBox(height: 10),
+
+                        // Phone
+                        text(
+                          "business_address".tr,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          textColor: darkGreyColor,
+                        ),
+                        text(
+                          authController.profileData.value.address??"",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          textColor: dark1BrownColor,
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 24),
+
+                  text(
+                    "account_settings".tr,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    textColor: dark1BrownColor,
+                    fontFamily: FontFamily.interBold,
+                  ),
+                  SizedBox(height: 12),
+
+                  Container(
+                    padding: EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(21),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            Get.to(EditProfileScreen());
                           },
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Icon(Icons.group, color: dark1BrownColor),
-                        SizedBox(width: 10),
-                        text(
-                          "multi_access".tr,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: FontFamily.interSansMedium,
-                          textColor: dark1BrownColor,
-                        ),
-                        Spacer(),
-                        Icon(Icons.arrow_forward_ios_outlined, size: 20),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    InkWell(
-                      onTap: (){
-                        _showLanguageDialog(context);
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.g_translate_sharp, color: dark1BrownColor),
-                          SizedBox(width: 10),
-                          text(
-                            "language".tr,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: FontFamily.interSansMedium,
-                            textColor: dark1BrownColor,
+                          child: Row(
+                            children: [
+                              Icon(Icons.person, color: dark1BrownColor),
+                              SizedBox(width: 10),
+                              text(
+                                "edit_profile".tr,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: FontFamily.interSansMedium,
+                                textColor: dark1BrownColor,
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                            ],
                           ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios_outlined, size: 20),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-
-                    Row(
-                      children: [
-                        Icon(Icons.support_agent, color: dark1BrownColor),
-                        SizedBox(width: 10),
-                        text(
-                          "contact_support".tr,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: FontFamily.interSansMedium,
-                          textColor: dark1BrownColor,
                         ),
-                        Spacer(),
-                        Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                        SizedBox(height: 10,),
+                        Divider(),
+
+                        // Row(
+                        //   children: [
+                        //     Icon(Icons.lock, color: dark1BrownColor),
+                        //     SizedBox(width: 10),
+                        //     text(
+                        //       "Change Password",
+                        //       fontSize: 18,
+                        //       fontWeight: FontWeight.w500,
+                        //       fontFamily: FontFamily.interBold,
+                        //       textColor: dark1BrownColor,
+                        //     ),
+                        //     Spacer(),
+                        //     Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                        //   ],
+                        // ),
+                        // Divider(),
+                        SizedBox(height: 10,),
+                        InkWell(
+                          onTap: (){
+                            Get.to(NotificationScreen());
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.notifications, color: dark1BrownColor),
+                              SizedBox(width: 10),
+                              text(
+                                "notification_settings".tr,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: FontFamily.interSansMedium,
+                                textColor: dark1BrownColor,
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Divider(),
+
+                        // Row(
+                        //   children: [
+                        //     Icon(Icons.cloud, color: dark1BrownColor),
+                        //     SizedBox(width: 10),
+                        //     text(
+                        //       "cloud_backup".tr,
+                        //       fontSize: 18,
+                        //       fontWeight: FontWeight.w500,
+                        //       fontFamily: FontFamily.interBold,
+                        //       textColor: dark1BrownColor,
+                        //     ),
+                        //     Spacer(),
+                        //     Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                        //   ],
+                        // ),
+                        // Divider(),
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            Icon(Icons.wifi, color: dark1BrownColor),
+                            SizedBox(width: 10),
+                            text(
+                              "offline_status".tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: FontFamily.interSansMedium,
+                              textColor: dark1BrownColor,
+                            ),
+                            Spacer(),
+                            Switch(
+                              value: isValue,
+                              activeColor: dark1BrownColor,
+                              inactiveThumbColor: white,
+                              onChanged: (value) {
+                                isValue = value!;
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            Icon(Icons.group, color: dark1BrownColor),
+                            SizedBox(width: 10),
+                            text(
+                              "multi_access".tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: FontFamily.interSansMedium,
+                              textColor: dark1BrownColor,
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        InkWell(
+                          onTap: (){
+                            _showLanguageDialog(context);
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.g_translate_sharp, color: dark1BrownColor),
+                              SizedBox(width: 10),
+                              text(
+                                "language".tr,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: FontFamily.interSansMedium,
+                                textColor: dark1BrownColor,
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+
+                        Row(
+                          children: [
+                            Icon(Icons.support_agent, color: dark1BrownColor),
+                            SizedBox(width: 10),
+                            text(
+                              "contact_support".tr,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: FontFamily.interSansMedium,
+                              textColor: dark1BrownColor,
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Divider(),
                       ],
                     ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 24),
+
+                  CommonButton(text: "logout".tr,
+                      color: dark1BrownColor,
+                      textColor: white ,onPressed: (){
+                    showDialogLogout(context);
+                  }, fontFamily: FontFamily.interBold, fontWeight: FontWeight.w400)
+                ],
               ),
-              SizedBox(height: 24),
-              
-              CommonButton(text: "logout".tr,
-                  color: dark1BrownColor,
-                  textColor: white ,onPressed: (){
-                showDialogLogout(context);
-              }, fontFamily: FontFamily.interBold, fontWeight: FontWeight.w400)
-            ],
-          ),
-        ),
+            ),
+          );
+        }
       ),
     );
   }

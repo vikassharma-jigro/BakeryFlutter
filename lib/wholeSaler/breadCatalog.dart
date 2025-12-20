@@ -137,9 +137,9 @@ class _BreadcatalogState extends State<Breadcatalog> {
                     itemCount: productsController.productWholesalerList.value.data?.length??0,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.60,
+                      childAspectRatio: 0.62,
                       crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                      mainAxisSpacing: 12,
                     ),
 
                     itemBuilder: (_, index) {

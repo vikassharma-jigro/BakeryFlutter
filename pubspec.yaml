@@ -55,6 +55,8 @@ dependencies:
   mime:
   file_picker:
   cached_network_image:
+  flutter_screenutil: ^5.9.3
+  get_storage:
 
 dev_dependencies:
   flutter_test:

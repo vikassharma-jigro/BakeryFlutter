@@ -50,4 +50,5 @@ class AppImages {
   static String dispatchedIcon = "assets/images/dispatched.png";
   static String dQuesIcon = "assets/images/dQues.png";
   static String dUserIcon = "assets/images/dUser.png";
+  static String thankCheckIcon = "assets/images/thankCheck.png";
 }

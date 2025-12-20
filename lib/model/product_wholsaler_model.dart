@@ -29,7 +29,7 @@ class ProductWholesalerData {
   String? name;
   String? img;
   String? unit;
-  int? quantityPerUnit;
+  var quantityPerUnit;
   var count = 0;
   String? managerId;
   String? sellerName;

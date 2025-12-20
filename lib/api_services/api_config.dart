@@ -12,6 +12,7 @@ const String addCartUrl = 'add-to-cart/add-item';
 const String getItemUrl = 'add-to-cart/get-item';
 const String cartUpdateUrl = 'add-to-cart/update';
 const String checkOutUrl = 'checkout/preview';
+const String placeOrderUrl = 'checkout/place-order';
 
 
 

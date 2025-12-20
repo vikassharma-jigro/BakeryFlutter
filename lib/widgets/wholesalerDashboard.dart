@@ -94,9 +94,9 @@ class WholeSalerDashboard{
               ),
               Spacer(),
               Container(
-                padding: EdgeInsets.all(11),
+                padding: EdgeInsets.symmetric(horizontal: 11,vertical: 5),
                 decoration: BoxDecoration(
-                  color: Colors.yellow,
+                  color: lightYellow,
                   borderRadius: BorderRadius.circular(21),
                 ),
                 child: text("$orderStatus", textColor: Colors.red),

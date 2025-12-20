@@ -73,26 +73,26 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
-                            Image.asset(AppImages.cartIcon, height: 50),
-                            Positioned(
-                              right: -10,
-                              top: -5,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: softIvoryColor,
-                                ),
-                                child: text(
-                                  "${totalQty}",
-                                  textColor: brownColor,
-                                  isCentered: true,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 10,
-                                  fontFamily: FontFamily.interBold,
-                                ),
-                              ),
-                            ),
+                            Image.asset(AppImages.cartIcon, height: 40),
+                            // Positioned(
+                            //   right: -10,
+                            //   top: -5,
+                            //   child: Container(
+                            //     padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                            //     decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(20),
+                            //       color: softIvoryColor,
+                            //     ),
+                            //     child: text(
+                            //       "${totalQty??"0"}",
+                            //       textColor: brownColor,
+                            //       isCentered: true,
+                            //       fontWeight: FontWeight.w600,
+                            //       fontSize: 10,
+                            //       fontFamily: FontFamily.interBold,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -136,7 +136,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,        // 👉 2 items per row
-                          childAspectRatio: 0.5,    // item height-controller
+                          childAspectRatio: 0.6,    // item height-controller
                           crossAxisSpacing: 10,
 
                         ),
@@ -177,9 +177,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        text("Stock available",
+                                        text("${productData?.quantityPerUnit.toString()??""}${productData?.unit.toString()??""}",
                                             textColor: darkGreyColor,fontWeight: FontWeight.w600,
-                                            fontSize: 12,fontFamily: FontFamily.interBold
+                                            fontSize: 10,fontFamily: FontFamily.interBold
                                         ),
                                         Container(
                                           padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
@@ -200,6 +200,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                                 },
                                                 child: Icon(Icons.remove, size: 20,color: brownColor,),
                                               ),
+                                              SizedBox(width: 4,),
                                               text(
                                                   productData?.count.toString()??"",
                                                   textColor: darkBrownColor,

@@ -92,4 +92,27 @@ class ProductsController extends GetxController {
 
     return modal;
   }
+
+  Future<CartItemModel> getPlaceOrderApi({
+    BuildContext? context,
+    String? addressId,
+
+  }) async {
+    Map<String, dynamic> body = {
+      "addressId": addressId,
+    };
+    var response = await ApiBaseHelper().postApiCall(
+      false,
+      placeOrderUrl,
+      context!,
+      body,
+    );
+
+    CartItemModel modal = CartItemModel.fromJson(response);
+    Fluttertoast.showToast(msg: modal.message??"",
+        gravity: ToastGravity.CENTER
+    );
+    return modal;
+  }
+
 }

@@ -1,6 +1,6 @@
 class CheckOutModel {
   bool? success;
-  String? deliveryAddress;
+  DeliveryAddress? deliveryAddress;
   List<OrderSummary>? orderSummary;
   BillDetails? billDetails;
 
@@ -12,7 +12,9 @@ class CheckOutModel {
 
   CheckOutModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    deliveryAddress = json['deliveryAddress'];
+    deliveryAddress = json['deliveryAddress'] != null
+        ? new DeliveryAddress.fromJson(json['deliveryAddress'])
+        : null;
     if (json['orderSummary'] != null) {
       orderSummary = <OrderSummary>[];
       json['orderSummary'].forEach((v) {
@@ -27,7 +29,9 @@ class CheckOutModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
-    data['deliveryAddress'] = this.deliveryAddress;
+    if (this.deliveryAddress != null) {
+      data['deliveryAddress'] = this.deliveryAddress!.toJson();
+    }
     if (this.orderSummary != null) {
       data['orderSummary'] = this.orderSummary!.map((v) => v.toJson()).toList();
     }
@@ -38,12 +42,65 @@ class CheckOutModel {
   }
 }
 
+class DeliveryAddress {
+  String? sId;
+  bool? isDefault;
+  String? userId;
+  int? iV;
+  String? addressLine;
+  String? city;
+  String? createdAt;
+  String? pincode;
+  String? state;
+  String? updatedAt;
+
+  DeliveryAddress(
+      {this.sId,
+        this.isDefault,
+        this.userId,
+        this.iV,
+        this.addressLine,
+        this.city,
+        this.createdAt,
+        this.pincode,
+        this.state,
+        this.updatedAt});
+
+  DeliveryAddress.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    isDefault = json['isDefault'];
+    userId = json['userId'];
+    iV = json['__v'];
+    addressLine = json['addressLine'];
+    city = json['city'];
+    createdAt = json['createdAt'];
+    pincode = json['pincode'];
+    state = json['state'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['isDefault'] = this.isDefault;
+    data['userId'] = this.userId;
+    data['__v'] = this.iV;
+    data['addressLine'] = this.addressLine;
+    data['city'] = this.city;
+    data['createdAt'] = this.createdAt;
+    data['pincode'] = this.pincode;
+    data['state'] = this.state;
+    data['updatedAt'] = this.updatedAt;
+    return data;
+  }
+}
+
 class OrderSummary {
   String? productId;
   String? productSource;
   String? name;
   String? img;
-  var quantity;
+  int? quantity;
   int? price;
   int? total;
 
@@ -81,21 +138,14 @@ class OrderSummary {
 
 class BillDetails {
   int? itemTotal;
-  var deliveryCharge;
   var tax;
   var totalQuantity;
-   var grandTotal;
+  var grandTotal;
 
-  BillDetails(
-      {this.itemTotal,
-        this.deliveryCharge,
-        this.tax,
-        this.totalQuantity,
-        this.grandTotal});
+  BillDetails({this.itemTotal, this.tax, this.totalQuantity, this.grandTotal});
 
   BillDetails.fromJson(Map<String, dynamic> json) {
     itemTotal = json['itemTotal'];
-    deliveryCharge = json['deliveryCharge'];
     tax = json['tax'];
     totalQuantity = json['totalQuantity'];
     grandTotal = json['grandTotal'];
@@ -104,7 +154,6 @@ class BillDetails {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['itemTotal'] = this.itemTotal;
-    data['deliveryCharge'] = this.deliveryCharge;
     data['tax'] = this.tax;
     data['totalQuantity'] = this.totalQuantity;
     data['grandTotal'] = this.grandTotal;

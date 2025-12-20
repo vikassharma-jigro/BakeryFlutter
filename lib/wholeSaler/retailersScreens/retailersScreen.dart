@@ -44,7 +44,20 @@ class _RetailersScreenState extends State<RetailersScreen> {
         search: "",
       );
     });
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent &&
+          authController.hasMore.value &&
+          !authController.isLoadingPage.value) {
 
+        authController.getRetailerListApi(
+          context: context,
+          status: getStatus(),
+          search: _searchController.text,
+          //isLoadMore: true,
+        );
+      }
+    });
     /// Pagination Listener
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -181,31 +194,45 @@ class _RetailersScreenState extends State<RetailersScreen> {
 
                 return ListView.builder(
                   controller: _scrollController,
-                  itemCount: list.length + 1,
+                  itemCount: list.length + (authController.hasMore.value ? 1 : 0),
                   itemBuilder: (context, index) {
+
+                    // 🔹 Loader item
                     if (index == list.length) {
-                      return authController.hasMore.value
-                          ? const Padding(
+                      return const Padding(
                         padding: EdgeInsets.all(16),
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
-                          : const SizedBox();
+                        child: Center(child: CircularProgressIndicator()),
+                      );
                     }
 
                     final data = list[index];
+                    final employeeList = data.employeeDetails ?? [];
+                    final addressList = data.addresses??[];
 
-                    return RetailersDashBoard.retailersDetailsCard(
-                      data.retailerDetails?.shopName ?? "",
-                          () {},
-                      data.name ?? "",
-                      data.phone.toString() ?? "",
-                      data.address ?? "",
-                      data.status ?? "",
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: employeeList.length,
+                      itemBuilder: (context, itemIndex) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: addressList.length,
+                          itemBuilder: (context, index) {
+                          return RetailersDashBoard.retailersDetailsCard(
+                            employeeList[itemIndex].shopName ?? "",
+                                () {},
+                            data.name ?? "",
+                            data.phone?.toString() ?? "",
+                            addressList[index].addressLine??"",
+                            data.status ?? "",
+                          );
+                        },);
+                      },
                     );
                   },
                 );
+
               }),
             ),
           ],

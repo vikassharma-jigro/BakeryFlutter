@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../app_utils/font_family.dart';
+import '../app_utils/shared_preferences.dart';
 import '../app_utils/text_widget.dart';
 import '../auth_view/login_screen.dart';
 import '../getx_controller/auth_controller.dart';
@@ -28,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     Future.microtask(() {
-      authController.getProfileApi(context: context,status: authController.authModel.value.employeeData?.sId);
+      authController.getProfileApi(context: context,status: sp?.getString(SpUtil.MEMBER_ID) ?? "");
     },);
     super.initState();
   }
@@ -56,287 +57,291 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical:15 ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: softIvoryColor
-                ),
-                child: Column(
-                  children: [
-                    Center(
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(AppImages.imgIcon,height: 100,)),
+      body: Obx(() {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical:15 ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: softIvoryColor
                     ),
-                    SizedBox(height: 10,),
-                    text(
-                      authController.profileData.value.name??"",
-                      textColor:dark1BrownColor,
-                      isCentered: true,
-                      fontSize: 24,
-                      fontFamily: FontFamily.interBold,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    text(
-                      authController.profileData.value.retailerDetails?.shopName??"",
-                      textColor:dark1BrownColor,
-                      isCentered: true,
-                      fontSize: 16,
-                      fontFamily: FontFamily.interSansMedium,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    text(
-                      authController.profileData.value.phone.toString()??"",
-                      textColor:textBrownColor,
-                      isCentered: true,
-                      fontSize: 14,
-                      fontFamily: FontFamily.interRegular,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ],
-                ),
-              ),
+                    child: Column(
+                      children: [
 
-              SizedBox(height: 20,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: white,
-                    border:Border.all(color: borderColor)
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    text(
-                      "personal_details".tr,
-                      textColor:blackColor,
-                      isCentered: true,
-                      fontSize: 18,
-                      fontFamily: FontFamily.interBold,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            text(
-                              "retailer_name".tr,
-                              textColor:brownColor,
-                              isCentered: true,
-                              fontSize: 12,
-                              fontFamily: FontFamily.poppinsMedium,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            SizedBox(height: 10,),
-                            text(
-                              authController.profileData.value.name??"",
-                              textColor:dark1BrownColor,
-                              isCentered: true,
-                              fontSize: 16,
-                              fontFamily: FontFamily.poppinsMedium,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
+                        Center(
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.asset(AppImages.imgIcon,height: 100,)),
+                        ),
+                        SizedBox(height: 10,),
+                        text(
+                          authController.profileData.value.name??"",
+                          textColor:dark1BrownColor,
+                          isCentered: true,
+                          fontSize: 24,
+                          fontFamily: FontFamily.interBold,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        text(
+                          authController.profileData.value.retailerDetails?.shopName??"",
+                          textColor:dark1BrownColor,
+                          isCentered: true,
+                          fontSize: 16,
+                          fontFamily: FontFamily.interSansMedium,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        text(
+                          authController.profileData.value.phone.toString()??"",
+                          textColor:textBrownColor,
+                          isCentered: true,
+                          fontSize: 14,
+                          fontFamily: FontFamily.interRegular,
+                          fontWeight: FontWeight.w400,
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
+                  ),
+
+                  SizedBox(height: 20,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: white,
+                        border:Border.all(color: borderColor)
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        text(
+                          "personal_details".tr,
+                          textColor:blackColor,
+                          isCentered: true,
+                          fontSize: 18,
+                          fontFamily: FontFamily.interBold,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
                           children: [
-                            text(
-                              "shop_name".tr,
-                              textColor:brownColor,
-                              isCentered: true,
-                              fontSize: 12,
-                              fontFamily: FontFamily.interSansMedium,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            SizedBox(height: 10,),
-                            text(
-                              authController.profileData.value.retailerDetails?.shopName??"",
-                              textColor:dark1BrownColor,
-                              isCentered: true,
-                              fontSize: 16,
-                              fontFamily: FontFamily.interBold,
-                              fontWeight: FontWeight.w700,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text(
+                                  "retailer_name".tr,
+                                  textColor:brownColor,
+                                  isCentered: true,
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.poppinsMedium,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(height: 10,),
+                                text(
+                                  authController.profileData.value.name??"",
+                                  textColor:dark1BrownColor,
+                                  isCentered: true,
+                                  fontSize: 16,
+                                  fontFamily: FontFamily.poppinsMedium,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
                           children: [
-                            text(
-                              "mobile_number".tr,
-                              textColor:brownColor,
-                              isCentered: true,
-                              fontSize: 12,
-                              fontFamily: FontFamily.interSansMedium,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            SizedBox(height: 10,),
-                            text(
-                              authController.profileData.value.phone.toString()??"",
-                              textColor:dark1BrownColor,
-                              isCentered: true,
-                              fontSize: 16,
-                              fontFamily: FontFamily.interBold,
-                              fontWeight: FontWeight.w500,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text(
+                                  "shop_name".tr,
+                                  textColor:brownColor,
+                                  isCentered: true,
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.interSansMedium,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(height: 10,),
+                                text(
+                                  authController.profileData.value.retailerDetails?.shopName??"",
+                                  textColor:dark1BrownColor,
+                                  isCentered: true,
+                                  fontSize: 16,
+                                  fontFamily: FontFamily.interBold,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
                           children: [
-                            text(
-                              "email_id".tr,
-                              textColor:brownColor,
-                              isCentered: true,
-                              fontSize: 12,
-                              fontFamily: FontFamily.interSansMedium,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            SizedBox(height: 10,),
-                            text(
-                              authController.profileData.value.email??"",
-                              textColor:dark1BrownColor,
-                              isCentered: true,
-                              fontSize: 16,
-                              fontFamily: FontFamily.interBold,
-                              fontWeight: FontWeight.w500,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text(
+                                  "mobile_number".tr,
+                                  textColor:brownColor,
+                                  isCentered: true,
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.interSansMedium,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(height: 10,),
+                                text(
+                                  authController.profileData.value.phone.toString()??"",
+                                  textColor:dark1BrownColor,
+                                  isCentered: true,
+                                  fontSize: 16,
+                                  fontFamily: FontFamily.interBold,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
                           children: [
-                            text(
-                              "address".tr,
-                              textColor:brownColor,
-                              isCentered: true,
-                              fontSize: 12,
-                              fontFamily: FontFamily.interSansMedium,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            SizedBox(height: 10,),
-                            text(
-                              authController.profileData.value.address??"",
-                              textColor:dark1BrownColor,
-                              isCentered: true,
-                              fontSize: 16,
-                              fontFamily: FontFamily.interBold,
-                              fontWeight: FontWeight.w500,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text(
+                                  "email_id".tr,
+                                  textColor:brownColor,
+                                  isCentered: true,
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.interSansMedium,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(height: 10,),
+                                text(
+                                  authController.profileData.value.email??"",
+                                  textColor:dark1BrownColor,
+                                  isCentered: true,
+                                  fontSize: 16,
+                                  fontFamily: FontFamily.interBold,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
                           children: [
-                            text(
-                              "gst_number".tr,
-                              textColor:brownColor,
-                              isCentered: true,
-                              fontSize: 12,
-                              fontFamily: FontFamily.interSansMedium,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            SizedBox(height: 10,),
-                            text(
-                              authController.profileData.value.retailerDetails?.gstNumber??"",
-                              textColor:dark1BrownColor,
-                              isCentered: true,
-                              fontSize: 16,
-                              fontFamily: FontFamily.interBold,
-                              fontWeight: FontWeight.w500,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text(
+                                  "address".tr,
+                                  textColor:brownColor,
+                                  isCentered: true,
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.interSansMedium,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(height: 10,),
+                                text(
+                                  authController.profileData.value.address??"",
+                                  textColor:dark1BrownColor,
+                                  isCentered: true,
+                                  fontSize: 16,
+                                  fontFamily: FontFamily.interBold,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    InkWell(
-                      onTap: (){
-                        _showLanguageDialog(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          text(
-                            "Change Languages",
-                            textColor:dark1BrownColor,
-                            isCentered: true,
-                            fontSize: 16,
-                            fontFamily: FontFamily.interBold,
-                            fontWeight: FontWeight.w500,
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text(
+                                  "gst_number".tr,
+                                  textColor:brownColor,
+                                  isCentered: true,
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.interSansMedium,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                SizedBox(height: 10,),
+                                text(
+                                  authController.profileData.value.retailerDetails?.gstNumber??"",
+                                  textColor:dark1BrownColor,
+                                  isCentered: true,
+                                  fontSize: 16,
+                                  fontFamily: FontFamily.interBold,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        InkWell(
+                          onTap: (){
+                            _showLanguageDialog(context);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              text(
+                                "Change Languages",
+                                textColor:dark1BrownColor,
+                                isCentered: true,
+                                fontSize: 16,
+                                fontFamily: FontFamily.interBold,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              Icon(Icons.arrow_forward_ios_outlined,color: brownColor,),
+                            ],
                           ),
-                          Icon(Icons.arrow_forward_ios_outlined,color: brownColor,),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+
+
+                  SizedBox(height: 50,),
+                  CommonButton(
+                    text: "logout".tr,
+                    color: dark1BrownColor,
+                    borderRadius: BorderRadius.circular(15),
+                    onPressed: (){
+                      showDialogLogout(context);
+                    },
+
+                    fontFamily: FontFamily.interBold,
+                    fontWeight: FontWeight.w600,textColor: white,fontSize: 20,),
+                ],
               ),
-
-
-              SizedBox(height: 50,),
-              CommonButton(
-                text: "logout".tr,
-                color: dark1BrownColor,
-                borderRadius: BorderRadius.circular(15),
-                onPressed: (){
-                  showDialogLogout(context);
-                },
-
-                fontFamily: FontFamily.interBold,
-                fontWeight: FontWeight.w600,textColor: white,fontSize: 20,),
-            ],
-          ),
-        ),
+            ),
+          );
+        }
       ),
 
     );

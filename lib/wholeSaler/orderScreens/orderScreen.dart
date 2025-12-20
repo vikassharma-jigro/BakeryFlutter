@@ -9,8 +9,17 @@ import '../../app_utils/font_family.dart';
 import '../../app_utils/text_widget.dart';
 import '../../widgets/wholesalerDashboard.dart';
 
-class Orderscreen extends StatelessWidget {
+
+class Orderscreen extends StatefulWidget {
   const Orderscreen({super.key});
+
+  @override
+  State<Orderscreen> createState() => _OrderscreenState();
+}
+
+class _OrderscreenState extends State<Orderscreen> {
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +79,7 @@ class Orderscreen extends StatelessWidget {
                       AppImages.truckSvgIcon,
                       "156",
                       "orders".tr,
-                      "in_transit".tr,
+                      "shipped".tr,
                       Colors.deepOrange,
                     ),
                   ),
@@ -118,6 +127,56 @@ class Orderscreen extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 20,),
+
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: white,
+                  borderRadius: BorderRadius.circular(21),
+                ),
+                child: Column(
+                  children: [
+                    // Row(
+                    //   children: [
+                    //     Container(
+                    //       padding: EdgeInsets.symmetric(horizontal: 82, vertical: 11),
+                    //       decoration: BoxDecoration(
+                    //         color: btnColor.withOpacity(0.4),
+                    //         borderRadius: BorderRadius.circular(21),
+                    //       ),
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(Icons.calendar_month, color: dark1BrownColor,),
+                    //           text("this_week".tr, fontSize: 14, fontWeight: FontWeight.w500, fontFamily: FontFamily.interRegular, textColor: dark1BrownColor),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     Spacer(),
+                    //     Container(
+                    //       padding: EdgeInsets.all(12),
+                    //       decoration: BoxDecoration(
+                    //         color: btnColor.withOpacity(0.4),
+                    //         borderRadius: BorderRadius.circular(50),
+                    //       ),
+                    //       child: Icon(Icons.menu, color: dark1BrownColor,),
+                    //     ),
+                    //   ],
+                    // ),
+                    // SizedBox(height: 10,),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        buildFilter('all'.tr, 0),
+                        buildFilter('placed'.tr, 1),
+                        buildFilter('packed'.tr, 2),
+                        buildFilter('shipped'.tr, 3),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 29),
 
               ListView.builder(
@@ -141,4 +200,27 @@ class Orderscreen extends StatelessWidget {
       ),
     );
   }
+  Widget buildFilter(String label, int index) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: selectedIndex == index ? darkBrownColor : btnColor.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(21),
+        ),
+        child: text(
+          label,
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          textColor: selectedIndex == index ? white : dark1BrownColor,
+        ),
+      ),
+    );
+  }
 }
+

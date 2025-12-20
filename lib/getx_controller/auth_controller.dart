@@ -96,7 +96,6 @@ class AuthController extends GetxController {
       "phone": phone,
       "department":department,
       "status":status,
-      "textCode":textCode,
       "address": jsonEncode(address),
       //"joiningDate": joiningDate,
       "employeeDetails": jsonEncode(retailerDetails),
@@ -155,12 +154,24 @@ class AuthController extends GetxController {
   }
   var retailerListModel = RetailerListModel().obs;
   var page = 1.obs;
-  var limit = 10; // ya jo chaho
+  var limit = 10;
   var isLoadingPage = false.obs;
   var hasMore = true.obs;
-  Future<RetailerListModel>getRetailerListApi({BuildContext? context,var status,var search, bool isLoadMore = false }) async {
-     retailerListModel.value;
-     String url =
+
+  Future<RetailerListModel> getRetailerListApi({
+    BuildContext? context,
+    var status,
+    var search,
+    bool isLoadMore = false,
+  }) async {
+
+    if (isLoadingPage.value || !hasMore.value) {
+      return retailerListModel.value;
+    }
+
+    isLoadingPage.value = true;
+
+    String url =
         "$retailerAddListUrl"
         "?status=$status"
         "&search=$search"
@@ -168,27 +179,29 @@ class AuthController extends GetxController {
         "&limit=$limit";
 
     print("API URL >>> $url");
-    //String url = "$retailerAddListUrl?status=$status&search=$search";
-    var response = await ApiBaseHelper().getApiCall(context!,url);
-    print("response>>>>${response}");
-    RetailerListModel modal = RetailerListModel.fromJson(response);
-    page.value++;
-     if (isLoadMore) {
-       if (modal.data != null && modal.data!.isNotEmpty) {
-         retailerListModel.value.data!.addAll(modal.data!);
-       } else {
-         // ❗ page 3 me data nahi aaya
-         hasMore.value = false;
-       }
-     }
-     /// 👇 FIRST PAGE
-     else {
-       retailerListModel.value = modal;
-       hasMore.value = (modal.data?.length ?? 0) == limit;
-     }
 
-     //isLoading.value = false;
-     return modal;
+    var response = await ApiBaseHelper().getApiCall(context!, url);
+    RetailerListModel modal = RetailerListModel.fromJson(response);
+
+    /// 🔹 LOAD MORE (Page 2,3...)
+    if (isLoadMore) {
+      if (modal.data != null && modal.data!.isNotEmpty) {
+        retailerListModel.value.data!.addAll(modal.data!);
+        page.value++; // ✅ data aaya tabhi page++
+      } else {
+        hasMore.value = false; // ❗ page 2 empty → page 1 ka data rahega
+      }
+    }
+
+    /// 🔹 FIRST PAGE
+    else {
+      retailerListModel.value = modal;
+      page.value = 2; // next page ready
+      hasMore.value = (modal.data?.length ?? 0) == limit;
+    }
+
+    isLoadingPage.value = false;
+    return modal;
   }
 
   var profileData = ProfileData().obs;

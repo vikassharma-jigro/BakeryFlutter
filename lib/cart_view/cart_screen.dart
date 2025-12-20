@@ -67,40 +67,44 @@ class _CartScreenState extends State<CartScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            text("${productsController.cartItemList.value.data?.totalItems??"0"} item",
-                textColor: brownColor,
-                isCentered: true,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                fontFamily: FontFamily.interBold
-            ),
-            InkWell(
-              onTap: (){
-                Get.to(CheckoutScreen());
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: brownColor
-                ),
-                child: text("review_order".tr,
-                    textColor: softIvoryColor,
+      bottomNavigationBar: Obx(
+        () {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                text("${productsController.cartItemList.value.data?.totalItems??"0"} item",
+                    textColor: brownColor,
                     isCentered: true,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     fontFamily: FontFamily.interBold
                 ),
-              ),
-            )
-          ],
-        ),
+                InkWell(
+                  onTap: (){
+                    Get.to(CheckoutScreen());
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: brownColor
+                    ),
+                    child: text("review_order".tr,
+                        textColor: softIvoryColor,
+                        isCentered: true,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        fontFamily: FontFamily.interBold
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
       ),
       body: SingleChildScrollView(
         child: Padding(

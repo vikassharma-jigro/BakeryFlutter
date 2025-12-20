@@ -30,12 +30,13 @@ class WholeSalerBreadCatalog {
     return Container(
       //width: MediaQuery.sizeOf(context).width * 0.44,
       //height: MediaQuery.sizeOf(context).height * 0.4,
+      //padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
       decoration: BoxDecoration(
         color: white,
         borderRadius: BorderRadius.circular(21),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Item Image
           ClipRRect(
@@ -47,7 +48,7 @@ class WholeSalerBreadCatalog {
               imageUrl: imgPath,
               fit: BoxFit.cover,
               placeholder: (context, url) => Image.asset(AppImages.multigrainbread),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
             ),
           ),
           // Container(

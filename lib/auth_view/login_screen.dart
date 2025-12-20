@@ -161,6 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             //await prefs.setString("role", role);
                             await prefs.setString("email", userEmail ?? "");
                             sp?.putString(SpUtil.ACCESS_TOKEN, authController.authModel.value.token ?? "");
+                            sp?.putString(SpUtil.MEMBER_ID, authController.authModel.value.employeeData?.sId ?? "");
                             sp?.putString(SpUtil.ROLE, role);
 
                             // Navigate based on role

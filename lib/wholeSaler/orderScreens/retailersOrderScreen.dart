@@ -22,7 +22,7 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightBrownColor,
+      backgroundColor: softIvoryColor,
       appBar: AppBar(
         backgroundColor: white,
         automaticallyImplyLeading: false,
@@ -48,11 +48,11 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               // Retailers Card
-              Row(
+             /* Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(3, (index){
                   return InkWell(
@@ -112,8 +112,8 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
                     ),
                   );
                 }),
-              ),
-              SizedBox(height: 20,),
+              ),*/
+              /*SizedBox(height: 20,),
         
               Container(
                 padding: EdgeInsets.all(16),
@@ -162,8 +162,8 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 20,),
+              ),*/
+
         
               Column(
                 children: List.generate(6, (index){
@@ -182,9 +182,9 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
                             text("Order #ORD-2847", textColor: dark1BrownColor, fontWeight: FontWeight.w500, fontSize: 12),
                             Spacer(),
                             Container(
-                              padding: EdgeInsets.all(5),
+                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                               decoration: BoxDecoration(
-                                color: Colors.yellow.withOpacity(0.2),
+                                color: lightYellow,
                                 borderRadius: BorderRadius.circular(21),
                               ),
                               child: text("placed".tr, textColor: darkBrownColor, fontSize: 12, fontWeight: FontWeight.w500),
@@ -196,25 +196,21 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
                         SizedBox(height: 10,),
                         Row(
                           children: [
-                            Container(
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(AppImages.catalogIcon),
-                                  SizedBox(width: 7,),
-                                  text("50 unit", textColor: blackColor, fontSize: 14, fontWeight: FontWeight.w500),
-                                ],
-                              ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppImages.catalogIcon),
+                                SizedBox(width: 7,),
+                                text("50 unit", textColor: blackColor, fontSize: 14, fontWeight: FontWeight.w500),
+                              ],
                             ),
                             SizedBox(width: 16,),
         
-                            Container(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.calendar_month, color: dark1BrownColor,),
-                                  SizedBox(width: 7,),
-                                  text("Dec 28, 2024", textColor: dark1BrownColor, fontSize: 14, fontWeight: FontWeight.w500),
-                                ],
-                              ),
+                            Row(
+                              children: [
+                                Icon(Icons.calendar_month, color: dark1BrownColor,),
+                                SizedBox(width: 7,),
+                                text("Dec 28, 2024", textColor: dark1BrownColor, fontSize: 14, fontWeight: FontWeight.w500),
+                              ],
                             ),
                             Spacer(),
         

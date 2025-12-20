@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../api_services/api_config.dart';
 import '../../app_utils/app_colors.dart';
+import '../../app_utils/app_images.dart';
 import '../../app_utils/font_family.dart';
 import '../../app_utils/text_widget.dart';
 import '../../getx_controller/product_controller.dart';
@@ -64,40 +65,43 @@ class _CartviewState extends State<Cartview> {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            text("${productsController.cartItemList.value.data?.totalItems??"0"} item",
-                textColor: brownColor,
-                isCentered: true,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                fontFamily: FontFamily.interBold
-            ),
-            InkWell(
-              onTap: (){
-                Get.to(CheckoutScreen());
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: brownColor
-                ),
-                child: text("review_order".tr,
-                    textColor: softIvoryColor,
+      bottomNavigationBar: Obx(() {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                text("${productsController.cartItemList.value.data?.totalItems??"0"} item",
+                    textColor: brownColor,
                     isCentered: true,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     fontFamily: FontFamily.interBold
                 ),
-              ),
-            )
-          ],
-        ),
+                InkWell(
+                  onTap: (){
+                    Get.to(CheckoutScreen(isCheckout: true,));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: brownColor
+                    ),
+                    child: text("review_order".tr,
+                        textColor: softIvoryColor,
+                        isCentered: true,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        fontFamily: FontFamily.interBold
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        }
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -179,8 +183,8 @@ class _CartviewState extends State<Cartview> {
                                     child: CachedNetworkImage(
                                       imageUrl: "$IP${cartData?.img??""}",
                                       fit: BoxFit.cover,width: 100,
-                                      placeholder: (context, url) => CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      placeholder: (context, url) => Image.asset(AppImages.multigrainbread),
+                                      errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
                                     )),
                                 SizedBox(width: 20,),
                                 Column(
