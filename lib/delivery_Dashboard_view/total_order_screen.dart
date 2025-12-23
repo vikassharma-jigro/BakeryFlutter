@@ -1,3 +1,4 @@
+import 'package:bakerybrown/app_utils/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import '../../app_utils/app_colors.dart';
 import '../../app_utils/font_family.dart';
 import '../../app_utils/showAlertMessage.dart';
 import '../../app_utils/text_widget.dart';
+import '../getx_controller/delivery_controller.dart';
 
 
 
@@ -20,6 +22,8 @@ class TotalOrderScreen extends StatefulWidget {
 
 class _TotalOrderScreenState extends State<TotalOrderScreen> {
   TextEditingController otpController = TextEditingController();
+  final DeliveryController deliveryController = Get.put(DeliveryController());
+
   @override
   void initState() {
     super.initState();
@@ -62,109 +66,134 @@ class _TotalOrderScreenState extends State<TotalOrderScreen> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                ListView.builder(
-                  itemCount: 10,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    String status = statuses[index];
-                    String btnText = btnTexts[index];
-                    bool showButton = showButtons[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: white
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Obx(() {
+          return deliveryController.deliveryList.value.totalPendingOrders!.isEmpty||deliveryController.deliveryList.value.totalPendingOrders==null?
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: Image.asset(AppImages.dataNotFoundIcon,height: 150,)),
+              SizedBox(height: 20,),
+              text("Data Not Found",
+                  textColor: dark1BrownColor,
+                  fontFamily: FontFamily.interBold,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700
+              ),
+            ],
+          )
+          :SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    ListView.builder(
+                      itemCount: deliveryController.deliveryList.value.totalPendingOrders?.length??0,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                      var deliverPendingOrder =  deliveryController.deliveryList.value.totalPendingOrders?[index];
+                        String status = statuses[index];
+                        String btnText = btnTexts[index];
+                        bool showButton = showButtons[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: white
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
 
-                                text("B-ORD-102",
-                                    textColor: brownColor,
-                                    fontFamily: FontFamily.poppinsBold,
+                                    text(deliverPendingOrder?.orderId??"",
+                                        textColor: brownColor,
+                                        fontFamily: FontFamily.poppinsBold,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700
+                                    ),
+
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: redColor.withOpacity(.1)
+                                      ),
+                                      child: text(deliverPendingOrder?.status??"",
+                                          textColor: brownColor,
+                                          fontFamily: FontFamily.poppinsMedium,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                                SizedBox(height: 5,),
+                                text(deliverPendingOrder?.orderFrom?.name??"",
+                                    textColor: dTextColor,
+                                    fontFamily: FontFamily.poppinsMedium,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w700
+                                    fontWeight: FontWeight.w500
                                 ),
-
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: status=="delivered".tr?greenColor.withOpacity(.1):redColor.withOpacity(.1)
-                                  ),
-                                  child: text(status,
-                                      textColor: status=="delivered".tr?greenColor:brownColor,
-                                      fontFamily: FontFamily.poppinsMedium,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500
-                                  ),
+                                SizedBox(height: 5,),
+                                text(deliverPendingOrder?.orderFrom?.contact.toString()??"",
+                                    textColor: dTextColor,
+                                    fontFamily: FontFamily.poppinsRegular,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400
                                 ),
+                                SizedBox(height: 5,),
+                                text(deliverPendingOrder?.deliveryAddress?.addressLine??"",
+                                    textColor: dTextColor,
+                                    fontFamily: FontFamily.poppinsRegular,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500
+                                ),
+                                SizedBox(height: 15,),
+                                if (showButton)
+                                CommonButton(
+                                  text: btnText,
+                                  color: brownColor,
+                                  onPressed: () {
+                                    deliveryController.getDispatchOrderApi(context: context,orderId:deliverPendingOrder?.orderId.toString()).then((value) {
+                                      if(value.success==true){
+                                        deliveryController.getDeliveryOrderListApi(context: context);
+                                      }
+                                    },);
 
+                                    // setState(() {
+                                    //   if (status == "packed".tr) {
+                                    //     statuses[index] = "dispatched".tr;
+                                    //     btnTexts[index] = "mark_delivered".tr;
+                                    //   } else if (status == "dispatched".tr) {
+                                    //     showOtpDialog(context, statuses[index], index, statuses, showButtons);
+                                    //     // statuses[index] = "Delivered";
+                                    //     // showButtons[index] = false;
+                                    //   }
+                                    // });
+                                  },
+                                  fontFamily: FontFamily.poppinsMedium,
+                                  fontWeight: FontWeight.w400,
+                                  textColor: white,fontSize: 14,),
+                                SizedBox(height: 12,),
                               ],
                             ),
-                            SizedBox(height: 5,),
-                            text("Golden Bakery Ltd",
-                                textColor: dTextColor,
-                                fontFamily: FontFamily.poppinsMedium,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500
-                            ),
-                            SizedBox(height: 5,),
-                            text("+1 (555) 234-5678",
-                                textColor: dTextColor,
-                                fontFamily: FontFamily.poppinsRegular,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400
-                            ),
-                            SizedBox(height: 5,),
-                            text("456 Oak Avenue Business Park, NY 10002",
-                                textColor: dTextColor,
-                                fontFamily: FontFamily.poppinsRegular,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500
-                            ),
-                            SizedBox(height: 15,),
-                            if (showButton)
-                            CommonButton(
-                              text: btnText,
-                              color: brownColor,
-                              onPressed: () {
-                                setState(() {
-                                  if (status == "packed".tr) {
-                                    statuses[index] = "dispatched".tr;
-                                    btnTexts[index] = "mark_delivered".tr;
-                                  } else if (status == "dispatched".tr) {
-                                    showOtpDialog(context, statuses[index], index, statuses, showButtons);
-                                    // statuses[index] = "Delivered";
-                                    // showButtons[index] = false;
-                                  }
-                                });
-                              },
-                              fontFamily: FontFamily.poppinsMedium,
-                              fontWeight: FontWeight.w400,
-                              textColor: white,fontSize: 14,),
-                            SizedBox(height: 12,),
-                          ],
-                        ),
-                      ),
-                    );
-                  },)
+                          ),
+                        );
+                      },)
 
-              ],
-            )
-        ),
+                  ],
+                )
+            ),
+          );
+        }
       ),
     );
   }

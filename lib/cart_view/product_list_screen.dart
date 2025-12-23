@@ -229,7 +229,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           context: context,
                                           productId: productData?.productId.toString(),
                                           quantity: productData?.count,
-                                          sellerId: productData?.managerId.toString(),
+                                          sellerId: productData?.sellerId.toString(),
                                         );
                                       },
                                       fontFamily: FontFamily.interBold,

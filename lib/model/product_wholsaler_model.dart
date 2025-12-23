@@ -31,7 +31,7 @@ class ProductWholesalerData {
   String? unit;
   var quantityPerUnit;
   var count = 0;
-  String? managerId;
+  String? sellerId;
   String? sellerName;
   int? price;
 
@@ -41,7 +41,7 @@ class ProductWholesalerData {
         this.img,
         this.unit,
         this.quantityPerUnit,
-        this.managerId,
+        this.sellerId,
         this.sellerName,
         this.price});
 
@@ -51,7 +51,7 @@ class ProductWholesalerData {
     img = json['img'];
     unit = json['unit'];
     quantityPerUnit = json['quantityPerUnit'];
-    managerId = json['managerId'];
+    sellerId = json['sellerId'];
     sellerName = json['sellerName'];
     price = json['price'];
   }
@@ -63,7 +63,7 @@ class ProductWholesalerData {
     data['img'] = this.img;
     data['unit'] = this.unit;
     data['quantityPerUnit'] = this.quantityPerUnit;
-    data['managerId'] = this.managerId;
+    data['sellerId'] = this.sellerId;
     data['sellerName'] = this.sellerName;
     data['price'] = this.price;
     return data;

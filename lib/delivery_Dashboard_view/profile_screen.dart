@@ -5,7 +5,9 @@ import '../../app_utils/app_colors.dart';
 import '../../app_utils/font_family.dart';
 import '../../app_utils/text_widget.dart';
 import '../app_utils/app_images.dart';
+import '../app_utils/shared_preferences.dart';
 import '../auth_view/login_screen.dart';
+import '../getx_controller/auth_controller.dart';
 import '../main.dart';
 
 
@@ -20,8 +22,12 @@ class ProfileScreen extends StatefulWidget {
 
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final AuthController authController = Get.put(AuthController());
   @override
   void initState() {
+    Future.microtask(() {
+      authController.getProfileApi(context: context,status: sp?.getString(SpUtil.MEMBER_ID) ?? "");
+    },);
     super.initState();
   }
 
@@ -29,386 +35,390 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: floralWhiteColor,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(175), // 👈 Yaha height set karo
-        child: Container(
-          color: brownColor,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0,right: 16,top: 10),
-            child: SafeArea(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Obx(
+       () {
+        return Scaffold(
+          backgroundColor: floralWhiteColor,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(175), // 👈 Yaha height set karo
+            child: Container(
+              color: brownColor,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0,right: 16,top: 10),
+                child: SafeArea(
+                  child: Column(
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
 
-                      Expanded(
-                        child: text(
-                          "my_profile".tr,
-                          textColor: white,
-                          isCentered: true,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                          fontFamily: FontFamily.poppinsBold,
-                        ),
+                          Expanded(
+                            child: text(
+                              "my_profile".tr,
+                              textColor: white,
+                              isCentered: true,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                              fontFamily: FontFamily.poppinsBold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15,),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(AppImages.dUserIcon,height: 70,)),
+
+                      text(
+                        authController.profileData.value.name??"",
+                        textColor: white,
+                        isCentered: true,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        fontFamily: FontFamily.poppinsBold,
+                      ),
+                      text(
+                        authController.profileData.value.phone.toString()??"",
+                        textColor: white,
+                        isCentered: true,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        fontFamily: FontFamily.poppinsRegular,
                       ),
                     ],
                   ),
-                  SizedBox(height: 15,),
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(AppImages.dUserIcon,height: 70,)),
-
-                  text(
-                    "Rajesh Kumar",
-                    textColor: white,
-                    isCentered: true,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                    fontFamily: FontFamily.poppinsBold,
-                  ),
-                  text(
-                    "+91 98765 43210",
-                    textColor: white,
-                    isCentered: true,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    fontFamily: FontFamily.poppinsRegular,
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(AppImages.dQuesIcon,height: 30,),
-                              SizedBox(width: 20,),
-                              text("edit_profile".tr,
-                                  textColor: blackColor,
-                                  fontFamily: FontFamily.poppinsMedium,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500
-                              ),
-
-
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios,size: 18,),
-                        ],
+          body: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
                       ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10,),
-
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Image.asset(AppImages.dQuesIcon,height: 30,),
-                              SizedBox(width: 20,),
-                              text("payment_details".tr,
-                                  textColor: blackColor,
-                                  fontFamily: FontFamily.poppinsMedium,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500
-                              ),
-
-
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios,size: 18,),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10,),
-
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(AppImages.dQuesIcon,height: 30,),
-                              SizedBox(width: 20,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  text("delivery_performance".tr,
+                                  Image.asset(AppImages.dQuesIcon,height: 30,),
+                                  SizedBox(width: 20,),
+                                  text("edit_profile".tr,
                                       textColor: blackColor,
                                       fontFamily: FontFamily.poppinsMedium,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500
                                   ),
-                                  SizedBox(height: 10,),
-                                  Row(
+
+
+                                ],
+                              ),
+                              Icon(Icons.arrow_forward_ios,size: 18,),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10,),
+
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(AppImages.dQuesIcon,height: 30,),
+                                  SizedBox(width: 20,),
+                                  text("payment_details".tr,
+                                      textColor: blackColor,
+                                      fontFamily: FontFamily.poppinsMedium,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
+                                  ),
+
+
+                                ],
+                              ),
+                              Icon(Icons.arrow_forward_ios,size: 18,),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10,),
+
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(AppImages.dQuesIcon,height: 30,),
+                                  SizedBox(width: 20,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      text("248 orders",
+                                      text("delivery_performance".tr,
                                           textColor: blackColor,
-                                          fontFamily: FontFamily.poppinsRegular,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400
+                                          fontFamily: FontFamily.poppinsMedium,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500
                                       ),
-                                      SizedBox(width: 15,),
-                                      text("4.8",
-                                          textColor: blackColor,
-                                          fontFamily: FontFamily.poppinsRegular,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400
-                                      ),
-                                      Icon(Icons.star,color: Colors.orange,size: 14,),SizedBox(width: 15,),
-                                      text("€24,500",
-                                          textColor: greenColor,
-                                          fontFamily: FontFamily.poppinsRegular,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400
+                                      SizedBox(height: 10,),
+                                      Row(
+                                        children: [
+                                          text("248 orders",
+                                              textColor: blackColor,
+                                              fontFamily: FontFamily.poppinsRegular,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400
+                                          ),
+                                          SizedBox(width: 15,),
+                                          text("4.8",
+                                              textColor: blackColor,
+                                              fontFamily: FontFamily.poppinsRegular,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400
+                                          ),
+                                          Icon(Icons.star,color: Colors.orange,size: 14,),SizedBox(width: 15,),
+                                          text("€24,500",
+                                              textColor: greenColor,
+                                              fontFamily: FontFamily.poppinsRegular,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
+
+
                                 ],
                               ),
-
-
+                              Icon(Icons.arrow_forward_ios,size: 18,),
                             ],
                           ),
-                          Icon(Icons.arrow_forward_ios,size: 18,),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10,),
-
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(AppImages.dQuesIcon,height: 30,),
-                              SizedBox(width: 20,),
-                              text("payout_history".tr,
-                                  textColor: blackColor,
-                                  fontFamily: FontFamily.poppinsMedium,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500
-                              ),
-
-
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios,size: 18,),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10,),
-
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(AppImages.dQuesIcon,height: 30,),
-                              SizedBox(width: 20,),
-                              text("notification_settings".tr,
-                                  textColor: blackColor,
-                                  fontFamily: FontFamily.poppinsMedium,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500
-                              ),
-
-
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios,size: 18,),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10,),
-
-                InkWell(
-                  onTap: (){
-                    _showLanguageDialog(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: white
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    SizedBox(height: 10,),
+
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(AppImages.dQuesIcon,height: 30,),
+                                  SizedBox(width: 20,),
+                                  text("payout_history".tr,
+                                      textColor: blackColor,
+                                      fontFamily: FontFamily.poppinsMedium,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
+                                  ),
+
+
+                                ],
+                              ),
+                              Icon(Icons.arrow_forward_ios,size: 18,),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10,),
+
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(AppImages.dQuesIcon,height: 30,),
+                                  SizedBox(width: 20,),
+                                  text("notification_settings".tr,
+                                      textColor: blackColor,
+                                      fontFamily: FontFamily.poppinsMedium,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
+                                  ),
+
+
+                                ],
+                              ),
+                              Icon(Icons.arrow_forward_ios,size: 18,),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10,),
+
+                    InkWell(
+                      onTap: (){
+                        _showLanguageDialog(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: white
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Image.asset(AppImages.dQuesIcon,height: 30,),
-                                SizedBox(width: 20,),
-                                text("language".tr,
-                                    textColor: blackColor,
-                                    fontFamily: FontFamily.poppinsMedium,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500
+                                Row(
+                                  children: [
+                                    Image.asset(AppImages.dQuesIcon,height: 30,),
+                                    SizedBox(width: 20,),
+                                    text("language".tr,
+                                        textColor: blackColor,
+                                        fontFamily: FontFamily.poppinsMedium,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500
+                                    ),
+
+
+                                  ],
                                 ),
-
-
+                                Icon(Icons.arrow_forward_ios,size: 18,),
                               ],
                             ),
-                            Icon(Icons.arrow_forward_ios,size: 18,),
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
 
 
-                SizedBox(height: 10,),
+                    SizedBox(height: 10,),
 
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Image.asset(AppImages.dQuesIcon,height: 30,),
-                              SizedBox(width: 20,),
-                              text("help_support".tr,
-                                  textColor: blackColor,
-                                  fontFamily: FontFamily.poppinsMedium,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500
+                              Row(
+                                children: [
+                                  Image.asset(AppImages.dQuesIcon,height: 30,),
+                                  SizedBox(width: 20,),
+                                  text("help_support".tr,
+                                      textColor: blackColor,
+                                      fontFamily: FontFamily.poppinsMedium,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500
+                                  ),
+
+
+                                ],
                               ),
-
-
+                              Icon(Icons.arrow_forward_ios,size: 18,),
                             ],
                           ),
-                          Icon(Icons.arrow_forward_ios,size: 18,),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 10,),
-
-                InkWell(
-                  onTap: (){
-                    showDialogLogout(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: white
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    SizedBox(height: 10,),
+
+                    InkWell(
+                      onTap: (){
+                        showDialogLogout(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: white
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Image.asset(AppImages.dQuesIcon,height: 30,),
-                                SizedBox(width: 20,),
-                                text("logout".tr,
-                                    textColor: redColor,
-                                    fontFamily: FontFamily.poppinsMedium,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500
+                                Row(
+                                  children: [
+                                    Image.asset(AppImages.dQuesIcon,height: 30,),
+                                    SizedBox(width: 20,),
+                                    text("logout".tr,
+                                        textColor: redColor,
+                                        fontFamily: FontFamily.poppinsMedium,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500
+                                    ),
+
+
+                                  ],
                                 ),
-
-
+                                Icon(Icons.arrow_forward_ios,size: 18,color: redColor,),
                               ],
                             ),
-                            Icon(Icons.arrow_forward_ios,size: 18,color: redColor,),
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            )
-        ),
-      ),
+                  ],
+                )
+            ),
+          ),
+        );
+      }
     );
   }
 

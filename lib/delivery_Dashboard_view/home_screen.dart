@@ -1,9 +1,9 @@
 import 'package:bakerybrown/delivery_Dashboard_view/total_delivered_screen.dart';
 import 'package:bakerybrown/delivery_Dashboard_view/total_dispatched_screen.dart';
 import 'package:bakerybrown/delivery_Dashboard_view/total_order_screen.dart';
+import 'package:bakerybrown/getx_controller/delivery_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../app_utils/app_colors.dart';
 import '../../app_utils/app_images.dart';
 import '../../app_utils/font_family.dart';
@@ -21,8 +21,13 @@ class HomeScreen extends StatefulWidget {
 
 
 class _HomeScreenState extends State<HomeScreen> {
+  final DeliveryController deliveryController = Get.put(DeliveryController());
+
   @override
   void initState() {
+    Future.microtask(() {
+      deliveryController.getDeliveryOrderListApi(context: context);
+    },);
     super.initState();
   }
 
@@ -44,78 +49,76 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              InkWell(
-                onTap: (){
-                  Get.to(() => TotalOrderScreen());
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Image.asset(AppImages.dTotalOrderIcon,height: 50,),
-                          SizedBox(width: 10,),
-                          text("total_orders".tr,
-                          textColor: dTextColor,
-                          fontFamily: FontFamily.poppinsMedium,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500
-                          ),
-
-                        ],
+      body: Obx(
+        () {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: (){
+                      //Get.to(() => TotalOrderScreen());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: white
                       ),
-                      SizedBox(height: 5,),
-                      text("24",
-                          textColor: blackColor,
-                          fontFamily: FontFamily.poppinsBold,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700
-                      ),
-                      text("for_delivery".tr,
-                          textColor: dTextColor,
-                          fontFamily: FontFamily.poppinsRegular,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 15,),
-
-              InkWell(
-                onTap: (){
-                  Get.to(TotalDeliveredScreen());
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              Image.asset(AppImages.deliveredIcon,height: 50,),
+                              Image.asset(AppImages.dTotalOrderIcon,height: 50,),
                               SizedBox(width: 10,),
-                              text("delivered".tr,
+                              text("total_orders".tr,
+                              textColor: dTextColor,
+                              fontFamily: FontFamily.poppinsMedium,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500
+                              ),
+
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                          text(deliveryController.deliveryList.value.totalOrders.toString()??"",
+                              textColor: blackColor,
+                              fontFamily: FontFamily.poppinsBold,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700
+                          ),
+                          text("for_delivery".tr,
+                              textColor: dTextColor,
+                              fontFamily: FontFamily.poppinsRegular,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 15,),
+                  InkWell(
+                    onTap: (){
+                      Get.to(() => TotalOrderScreen());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(AppImages.dTotalOrderIcon,height: 50,),
+                              SizedBox(width: 10,),
+                              text("total_pending".tr,
                                   textColor: dTextColor,
                                   fontFamily: FontFamily.poppinsMedium,
                                   fontSize: 12,
@@ -124,105 +127,158 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             ],
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: greenColor.withOpacity(.1)
-                            ),
-                            child: text("37.5%",
-                                textColor: greenColor,
-                                fontFamily: FontFamily.poppinsMedium,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500
-                            ),
+                          SizedBox(height: 5,),
+                          text(deliveryController.deliveryList.value.pending.toString()??"",
+                              textColor: blackColor,
+                              fontFamily: FontFamily.poppinsBold,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700
+                          ),
+                          text("for_delivery".tr,
+                              textColor: dTextColor,
+                              fontFamily: FontFamily.poppinsRegular,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500
                           ),
                         ],
                       ),
-                      SizedBox(height: 5,),
-                      text("24",
-                          textColor: blackColor,
-                          fontFamily: FontFamily.poppinsBold,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700
-                      ),
-                      text("completed_today".tr,
-                          textColor: dTextColor,
-                          fontFamily: FontFamily.poppinsRegular,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
 
-              SizedBox(height: 15,),
 
-              InkWell(
-                onTap: (){
-                  Get.to(TotalDispatchedScreen());
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: white
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  SizedBox(height: 15,),
+
+                  InkWell(
+                    onTap: (){
+                      Get.to(TotalDispatchedScreen());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Image.asset(AppImages.dispatchedIcon,height: 50,),
-                              SizedBox(width: 10,),
-                              text("dispatched".tr,
-                                  textColor: dTextColor,
-                                  fontFamily: FontFamily.poppinsMedium,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500
-                              ),
+                              Row(
+                                children: [
+                                  Image.asset(AppImages.dispatchedIcon,height: 50,),
+                                  SizedBox(width: 10,),
+                                  text("dispatched".tr,
+                                      textColor: dTextColor,
+                                      fontFamily: FontFamily.poppinsMedium,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500
+                                  ),
 
+                                ],
+                              ),
+                              // Container(
+                              //   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                              //   decoration: BoxDecoration(
+                              //     borderRadius: BorderRadius.circular(10),
+                              //     color: blueColor.withOpacity(.1)
+                              //   ),
+                              //   child: text("62.5%",
+                              //       textColor: blueColor,
+                              //       fontFamily: FontFamily.poppinsMedium,
+                              //       fontSize: 12,
+                              //       fontWeight: FontWeight.w500
+                              //   ),
+                              // ),
                             ],
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: blueColor.withOpacity(.1)
-                            ),
-                            child: text("62.5%",
-                                textColor: blueColor,
-                                fontFamily: FontFamily.poppinsMedium,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500
-                            ),
+                          SizedBox(height: 5,),
+                          text(deliveryController.deliveryList.value.dispatched.toString()??"",
+                              textColor: blackColor,
+                              fontFamily: FontFamily.poppinsBold,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700
+                          ),
+                          text("on_way".tr,
+                              textColor: dTextColor,
+                              fontFamily: FontFamily.poppinsRegular,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500
                           ),
                         ],
                       ),
-                      SizedBox(height: 5,),
-                      text("24",
-                          textColor: blackColor,
-                          fontFamily: FontFamily.poppinsBold,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700
-                      ),
-                      text("on_way".tr,
-                          textColor: dTextColor,
-                          fontFamily: FontFamily.poppinsRegular,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+
+                  SizedBox(height: 15,),
+
+                  InkWell(
+                    onTap: (){
+                      Get.to(TotalDeliveredScreen());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: white
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.asset(AppImages.deliveredIcon,height: 50,),
+                                  SizedBox(width: 10,),
+                                  text("delivered".tr,
+                                      textColor: dTextColor,
+                                      fontFamily: FontFamily.poppinsMedium,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500
+                                  ),
+
+                                ],
+                              ),
+                              // Container(
+                              //   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                              //   decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(10),
+                              //       color: greenColor.withOpacity(.1)
+                              //   ),
+                              //   child: text("37.5%",
+                              //       textColor: greenColor,
+                              //       fontFamily: FontFamily.poppinsMedium,
+                              //       fontSize: 12,
+                              //       fontWeight: FontWeight.w500
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                          text(deliveryController.deliveryList.value.delivered.toString()??"",
+                              textColor: blackColor,
+                              fontFamily: FontFamily.poppinsBold,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700
+                          ),
+                          text("completed_today".tr,
+                              textColor: dTextColor,
+                              fontFamily: FontFamily.poppinsRegular,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               )
-            ],
-          )
-        ),
+            ),
+          );
+        }
       ),
     );
   }

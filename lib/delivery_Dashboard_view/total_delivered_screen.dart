@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../app_utils/app_colors.dart';
 import '../../app_utils/font_family.dart';
 import '../../app_utils/text_widget.dart';
+import '../getx_controller/delivery_controller.dart';
 
 
 
@@ -16,6 +17,8 @@ class TotalDeliveredScreen extends StatefulWidget {
 
 
 class _TotalDeliveredScreenState extends State<TotalDeliveredScreen> {
+  final DeliveryController deliveryController = Get.put(DeliveryController());
+
   @override
   void initState() {
     super.initState();
@@ -48,87 +51,92 @@ class _TotalDeliveredScreenState extends State<TotalDeliveredScreen> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                ListView.builder(
-                  itemCount: 10,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: white
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Obx(
+         () {
+          return SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    ListView.builder(
+                      itemCount: deliveryController.deliveryList.value.deliveredOrders?.length??0,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                       var deliveredOrders = deliveryController.deliveryList.value.deliveredOrders?[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: white
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
 
-                                text("B-ORD-102",
-                                    textColor: brownColor,
-                                    fontFamily: FontFamily.poppinsBold,
+                                    text(deliveredOrders?.orderId??"",
+                                        textColor: brownColor,
+                                        fontFamily: FontFamily.poppinsBold,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700
+                                    ),
+
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: greenColor.withOpacity(.1)
+                                      ),
+                                      child: text("delivered".tr,
+                                          textColor: greenColor,
+                                          fontFamily: FontFamily.poppinsMedium,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                                SizedBox(height: 5,),
+                                text(deliveredOrders?.orderFrom?.name??"",
+                                    textColor: dTextColor,
+                                    fontFamily: FontFamily.poppinsMedium,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w700
+                                    fontWeight: FontWeight.w500
                                 ),
-
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: greenColor.withOpacity(.1)
-                                  ),
-                                  child: text("delivered".tr,
-                                      textColor: greenColor,
-                                      fontFamily: FontFamily.poppinsMedium,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500
-                                  ),
+                                SizedBox(height: 5,),
+                                text(deliveredOrders?.orderFrom?.contact.toString()??"",
+                                    textColor: dTextColor,
+                                    fontFamily: FontFamily.poppinsRegular,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400
                                 ),
+                                SizedBox(height: 5,),
+                                text(deliveredOrders?.deliveryAddress?.addressLine??"",
+                                    textColor: dTextColor,
+                                    fontFamily: FontFamily.poppinsRegular,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500
+                                ),
+                                SizedBox(height: 15,),
 
                               ],
                             ),
-                            SizedBox(height: 5,),
-                            text("Golden Bakery Ltd",
-                                textColor: dTextColor,
-                                fontFamily: FontFamily.poppinsMedium,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500
-                            ),
-                            SizedBox(height: 5,),
-                            text("+1 (555) 234-5678",
-                                textColor: dTextColor,
-                                fontFamily: FontFamily.poppinsRegular,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400
-                            ),
-                            SizedBox(height: 5,),
-                            text("456 Oak Avenue Business Park, NY 10002",
-                                textColor: dTextColor,
-                                fontFamily: FontFamily.poppinsRegular,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500
-                            ),
-                            SizedBox(height: 15,),
+                          ),
+                        );
+                      },)
 
-                          ],
-                        ),
-                      ),
-                    );
-                  },)
-
-              ],
-            )
-        ),
+                  ],
+                )
+            ),
+          );
+        }
       ),
     );
   }

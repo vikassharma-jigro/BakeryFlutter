@@ -168,7 +168,7 @@ class _BreadcatalogState extends State<Breadcatalog> {
                         productData?.price.toString()??"",
                         int.parse(productData?.count.toString()??""),
                           productData?.productId.toString(),// LIVE COUNT
-                          productData?.managerId.toString(),// LIVE COUNT
+                          productData?.sellerId.toString(),// LIVE COUNT
                       );
                     },
                   ),

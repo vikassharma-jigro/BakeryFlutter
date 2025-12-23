@@ -14,6 +14,12 @@ const String cartUpdateUrl = 'add-to-cart/update';
 const String checkOutUrl = 'checkout/preview';
 const String placeOrderUrl = 'checkout/place-order';
 
+///delivery Api
+const String deliveryOrderUrl = 'delivery/get-delivery-orders';
+const String dispatchOrderUrl = 'delivery/dispatch';
+const String deliveredOrderUrl = 'delivery/Ready-to-deliverd';
+const String notificationListUrl = 'notification/get-notification';
+
 
 
 // APIs keys

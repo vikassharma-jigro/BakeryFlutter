@@ -1,6 +1,6 @@
 class AppStrings {
 
 
-  static const String appTitle = "Stufa";
+  static const String appTitle = "Bakery";
 
 }
