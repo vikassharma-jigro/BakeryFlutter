@@ -137,7 +137,7 @@ class _BreadcatalogState extends State<Breadcatalog> {
                     itemCount: productsController.productWholesalerList.value.data?.length??0,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.62,
+                      childAspectRatio: 0.57,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 12,
                     ),
@@ -165,7 +165,7 @@ class _BreadcatalogState extends State<Breadcatalog> {
                             () {},
                         "${productData?.quantityPerUnit.toString()??""} ${productData?.unit.toString()??""}",
                         "$IP${productData?.img??""}",
-                        productData?.price.toString()??"",
+                        "€${productData?.price.toString()??""}",
                         int.parse(productData?.count.toString()??""),
                           productData?.productId.toString(),// LIVE COUNT
                           productData?.sellerId.toString(),// LIVE COUNT

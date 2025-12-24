@@ -58,7 +58,7 @@ class _TotalDispatchedScreenState extends State<TotalDispatchedScreen> {
         ),
       ),
       body: Obx(() {
-          return deliveryController.deliveryList.value.totalPendingOrders!.isEmpty||deliveryController.deliveryList.value.totalPendingOrders==null?
+          return /*deliveryController.deliveryList.value.totalPendingOrders!.isEmpty||deliveryController.deliveryList.value.totalPendingOrders==null?
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +72,7 @@ class _TotalDispatchedScreenState extends State<TotalDispatchedScreen> {
                   fontWeight: FontWeight.w700
               ),
             ],
-          ) :SingleChildScrollView(
+          ) :*/SingleChildScrollView(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(

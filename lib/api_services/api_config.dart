@@ -13,6 +13,8 @@ const String getItemUrl = 'add-to-cart/get-item';
 const String cartUpdateUrl = 'add-to-cart/update';
 const String checkOutUrl = 'checkout/preview';
 const String placeOrderUrl = 'checkout/place-order';
+const String retailerOrderListUrl = 'order/get-retailer-orders';
+const String wholesalerOrderListUrl = 'order/get-wholesaler-orders';
 
 ///delivery Api
 const String deliveryOrderUrl = 'delivery/get-delivery-orders';

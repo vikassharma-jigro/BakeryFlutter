@@ -9,6 +9,7 @@ import '../api_services/api_base_helper.dart';
 import '../model/cart_item_model.dart';
 import '../model/check_out_model.dart';
 import '../model/product_wholsaler_model.dart';
+import '../model/retailer_order_model.dart';
 
 
 class ProductsController extends GetxController {
@@ -114,5 +115,23 @@ class ProductsController extends GetxController {
     );
     return modal;
   }
+  var retailerOrderData = RetailerOrderModel().obs;
+  Future<RetailerOrderModel>getRetailerOrderListApi({BuildContext? context}) async {
+    var response = await ApiBaseHelper().getApiCall(context!,retailerOrderListUrl);
 
+    RetailerOrderModel modal = RetailerOrderModel.fromJson(response);
+    retailerOrderData.value = modal;
+
+    return modal;
+  }
+
+  var wholesalerOrderData = RetailerOrderModel().obs;
+  Future<RetailerOrderModel>getWholesalerOrderApi({BuildContext? context}) async {
+    var response = await ApiBaseHelper().getApiCall(context!,wholesalerOrderListUrl);
+
+    RetailerOrderModel modal = RetailerOrderModel.fromJson(response);
+    wholesalerOrderData.value = modal;
+
+    return modal;
+  }
 }
