@@ -15,6 +15,12 @@ const String checkOutUrl = 'checkout/preview';
 const String placeOrderUrl = 'checkout/place-order';
 const String retailerOrderListUrl = 'order/get-retailer-orders';
 const String wholesalerOrderListUrl = 'order/get-wholesaler-orders';
+const String wholesalerProductListUrl = 'wholesaler-products/get-product';
+const String retailerToWholesalerOrderUrl = 'order/get-retailer-to-wholesaler';
+const String wholesalerDashboardUrl = 'dashboard/get-wholesaler-dashboard';
+const String wholesalerInvoiceUrl = 'invoice/get-wholesaler-invoice';
+const String wholesalerInvoiceReportUrl = 'invoice/get-wholesaler-invoice-report';
+const String retailerDashboardUrl = 'dashboard/get-retailer-dashboard';
 
 ///delivery Api
 const String deliveryOrderUrl = 'delivery/get-delivery-orders';

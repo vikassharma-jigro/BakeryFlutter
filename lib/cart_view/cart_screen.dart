@@ -187,7 +187,7 @@ class _CartScreenState extends State<CartScreen> {
                                         imageUrl: "$IP${cartData?.img??""}",width: 100,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) => CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) => Icon(Icons.error),
+                                        errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
                                       )),
                                   SizedBox(width: 20,),
                                   Column(

@@ -1,5 +1,6 @@
 import 'package:bakerybrown/app_utils/app_images.dart';
 import 'package:bakerybrown/app_utils/text_widget.dart';
+import 'package:bakerybrown/wholeSaler/accountsScreen/my_product_screen.dart';
 import 'package:bakerybrown/wholeSaler/profileScreens/editProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -198,6 +199,29 @@ class _ProfilescreenState extends State<Profilescreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        InkWell(
+                          onTap: (){
+                            Get.to(MyProductScreen());
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.person, color: dark1BrownColor),
+                              SizedBox(width: 10),
+                              text(
+                                "My Product".tr,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: FontFamily.interSansMedium,
+                                textColor: dark1BrownColor,
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios_outlined, size: 20),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 10,),
+                        Divider(),
                         InkWell(
                           onTap: (){
                             Get.to(EditProfileScreen());

@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: const <Widget>[
                 HomeScreen(),
                 OrderListScreen(),
-                ReportScreen(),
+                //ReportScreen(),
                 AccountsScreen(),
                 ProfileScreen(),
               ],
@@ -175,10 +175,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: Image.asset(AppImages.orderIcon,height: 20,color: _selectedIndex==1?dark1BrownColor:textBrownColor,),
               label: 'Order',
             ),
-            BottomNavigationBarItem(
-              icon: Image.asset(AppImages.reportIcon,height: 20,color: _selectedIndex==2?dark1BrownColor:textBrownColor,),
-              label: 'Report',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Image.asset(AppImages.reportIcon,height: 20,color: _selectedIndex==2?dark1BrownColor:textBrownColor,),
+            //   label: 'Report',
+            // ),
 
             BottomNavigationBarItem(
               icon: Image.asset(AppImages.paymentIcon,height: 20,color: _selectedIndex==3?dark1BrownColor:textBrownColor,),

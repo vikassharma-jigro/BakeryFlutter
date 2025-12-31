@@ -32,7 +32,7 @@ class RetailerOrderData {
   String? createdAt;
   String? productName;
   int? quantity;
-  int? totalAmount;
+  var totalAmount;
   String? status;
 
   RetailerOrderData(

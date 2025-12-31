@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 
 import '../../app_utils/app_colors.dart';
 import '../../app_utils/font_family.dart';
+import '../../getx_controller/product_controller.dart';
 
 class Retailersorderscreen extends StatefulWidget {
   const Retailersorderscreen({super.key});
@@ -18,6 +19,15 @@ class Retailersorderscreen extends StatefulWidget {
 class _RetailersorderscreenState extends State<Retailersorderscreen> {
   
   int selectedIndex = 0;
+  final ProductsController productsController = Get.put(ProductsController());
+
+  @override
+  void initState() {
+   Future.microtask(() {
+     productsController.getRetailerToWholesalerOrderApi(context: context);
+   },);
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -49,182 +59,183 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              // Retailers Card
-             /* Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(3, (index){
-                  return InkWell(
-                    onTap: () {},
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.27,
-                      height: MediaQuery.sizeOf(context).width * 0.4,
-                      decoration: BoxDecoration(
-                        color: white,
-                        borderRadius: BorderRadius.circular(21),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Wrap(
-                          children: [
-                            Center(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  top: MediaQuery.sizeOf(context).height * 0.03,
-                                  bottom: MediaQuery.sizeOf(context).height * 0.01,
-                                ),
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  color: white,
-                                  borderRadius: BorderRadius.circular(11),
-                                ),
-                                child: Center(
-                                  child: SvgPicture.asset(AppImages.catalogIcon),
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                width: double.infinity,
-                                child: text(
-                                  "42",
-                                  textColor: dark1BrownColor,
-                                  fontFamily: FontFamily.interRegular,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 24,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                            text(
-                              "total_orders".tr,
-                              textColor: dark1BrownColor,
-                              fontFamily: FontFamily.interRegular,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),*/
-              /*SizedBox(height: 20,),
-        
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(21),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 82, vertical: 11),
+          child: Obx(() {
+              return Column(
+                children: [
+                  // Retailers Card
+                 /* Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(3, (index){
+                      return InkWell(
+                        onTap: () {},
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 0.27,
+                          height: MediaQuery.sizeOf(context).width * 0.4,
                           decoration: BoxDecoration(
-                            color: btnColor.withOpacity(0.4),
+                            color: white,
                             borderRadius: BorderRadius.circular(21),
                           ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.calendar_month, color: dark1BrownColor,),
-                              text("this_week".tr, fontSize: 14, fontWeight: FontWeight.w500, fontFamily: FontFamily.interRegular, textColor: dark1BrownColor),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Wrap(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      top: MediaQuery.sizeOf(context).height * 0.03,
+                                      bottom: MediaQuery.sizeOf(context).height * 0.01,
+                                    ),
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      color: white,
+                                      borderRadius: BorderRadius.circular(11),
+                                    ),
+                                    child: Center(
+                                      child: SvgPicture.asset(AppImages.catalogIcon),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    width: double.infinity,
+                                    child: text(
+                                      "42",
+                                      textColor: dark1BrownColor,
+                                      fontFamily: FontFamily.interRegular,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 24,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                text(
+                                  "total_orders".tr,
+                                  textColor: dark1BrownColor,
+                                  fontFamily: FontFamily.interRegular,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        Spacer(),
-                        Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: btnColor.withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Icon(Icons.menu, color: dark1BrownColor,),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        buildFilter('all'.tr, 0),
-                        buildFilter('placed'.tr, 1),
-                        buildFilter('packed'.tr, 2),
-                        buildFilter('shipped'.tr, 3),
-                      ],
-                    ),
-                  ],
-                ),
-              ),*/
+                      );
+                    }),
+                  ),*/
+                  /*SizedBox(height: 20,),
 
-        
-              Column(
-                children: List.generate(6, (index){
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                  Container(
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: white,
-                      borderRadius: BorderRadius.circular(11),
+                      borderRadius: BorderRadius.circular(21),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            text("Order #ORD-2847", textColor: dark1BrownColor, fontWeight: FontWeight.w500, fontSize: 12),
-                            Spacer(),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                              padding: EdgeInsets.symmetric(horizontal: 82, vertical: 11),
                               decoration: BoxDecoration(
-                                color: lightYellow,
+                                color: btnColor.withOpacity(0.4),
                                 borderRadius: BorderRadius.circular(21),
                               ),
-                              child: text("placed".tr, textColor: darkBrownColor, fontSize: 12, fontWeight: FontWeight.w500),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.calendar_month, color: dark1BrownColor,),
+                                  text("this_week".tr, fontSize: 14, fontWeight: FontWeight.w500, fontFamily: FontFamily.interRegular, textColor: dark1BrownColor),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: btnColor.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Icon(Icons.menu, color: dark1BrownColor,),
                             ),
                           ],
                         ),
-                        SizedBox(height: 7,),
-                        text("whole_wheat_bread".tr, textColor: dark1BrownColor, fontWeight: FontWeight.w600, fontSize: 14, fontFamily: FontFamily.interRegular),
                         SizedBox(height: 10,),
+
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            buildFilter('all'.tr, 0),
+                            buildFilter('placed'.tr, 1),
+                            buildFilter('packed'.tr, 2),
+                            buildFilter('shipped'.tr, 3),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),*/
+
+                    ListView.builder(
+                      itemCount: productsController.retailerToWholesalerOrderData.value.data?.length??0,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        var retailerToWholesalerOrderData = productsController.retailerToWholesalerOrderData.value.data?[index];
+                        String iso = retailerToWholesalerOrderData?.createdAt??"";
+
+                        String date = iso.split("T")[0];
+                        return  Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: white,
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
-                                SvgPicture.asset(AppImages.catalogIcon),
-                                SizedBox(width: 7,),
-                                text("50 unit", textColor: blackColor, fontSize: 14, fontWeight: FontWeight.w500),
+                                text(retailerToWholesalerOrderData?.orderId??"", textColor: dark1BrownColor, fontWeight: FontWeight.w500, fontSize: 12),
                               ],
                             ),
-                            SizedBox(width: 16,),
-        
+                            SizedBox(height: 7,),
+                            text(retailerToWholesalerOrderData?.productName??"", textColor: dark1BrownColor, fontWeight: FontWeight.w600, fontSize: 14, fontFamily: FontFamily.interRegular),
+                            SizedBox(height: 10,),
                             Row(
                               children: [
-                                Icon(Icons.calendar_month, color: dark1BrownColor,),
-                                SizedBox(width: 7,),
-                                text("Dec 28, 2024", textColor: dark1BrownColor, fontSize: 14, fontWeight: FontWeight.w500),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(AppImages.catalogIcon),
+                                    SizedBox(width: 7,),
+                                    text("${retailerToWholesalerOrderData?.quantity??""} unit", textColor: blackColor, fontSize: 14, fontWeight: FontWeight.w500),
+                                  ],
+                                ),
+                                SizedBox(width: 16,),
+
+                                Row(
+                                  children: [
+                                    Icon(Icons.calendar_month, color: dark1BrownColor,),
+                                    SizedBox(width: 7,),
+                                    text(date, textColor: dark1BrownColor, fontSize: 14, fontWeight: FontWeight.w500),
+                                  ],
+                                ),
+                                Spacer(),
+
+                                Icon(Icons.arrow_forward_ios_outlined, color: dark1BrownColor, size: 18,),
                               ],
-                            ),
-                            Spacer(),
-        
-                            Icon(Icons.arrow_forward_ios_outlined, color: dark1BrownColor, size: 18,),
+                            )
                           ],
-                        )
-                      ],
-                    ),
-                  );
-                }),
-              )
-        
-        
-            ],
+                        ),
+                      );
+                    },)
+
+
+
+                ],
+              );
+            }
           ),
         ),
       ),

@@ -87,10 +87,10 @@ class _RetailersScreenState extends State<RetailersScreen> {
         backgroundColor: white,
         title: Row(
           children: [
-            InkWell(
-              onTap: () => Navigator.pop(context),
-              child: Icon(Icons.arrow_back_ios, color: brownColor),
-            ),
+            // InkWell(
+            //   onTap: () => Navigator.pop(context),
+            //   child: Icon(Icons.arrow_back_ios, color: brownColor),
+            // ),
             Expanded(
               child: text(
                 "retailers".tr,
@@ -155,7 +155,16 @@ class _RetailersScreenState extends State<RetailersScreen> {
                 authController.getRetailerListApi(
                   context: context,
                   status: getStatus(),
-                  search: v,
+                  search: _searchController.text,
+                );
+              },
+              onTap: (){
+                authController.page.value = 1;
+                //authController.hasMore.value = true;
+                authController.getRetailerListApi(
+                  context: context,
+                  status: getStatus(),
+                  search: _searchController.text,
                 );
               },
             ),

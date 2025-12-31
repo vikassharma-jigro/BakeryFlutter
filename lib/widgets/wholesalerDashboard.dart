@@ -88,7 +88,7 @@ class WholeSalerDashboard{
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  text("$orderId", fontSize: 14, fontWeight: FontWeight.w600, fontFamily: FontFamily.interBold, textColor: blackColor),
+                  text("$orderId", fontSize: 13, fontWeight: FontWeight.w600, fontFamily: FontFamily.interBold, textColor: blackColor),
                   text("$orderDetails", fontSize: 12, fontWeight: FontWeight.w400, fontFamily: FontFamily.interRegular, textColor: dark1BrownColor)
                 ],
               ),

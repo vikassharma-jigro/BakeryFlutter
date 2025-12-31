@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:bakerybrown/model/auth_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:bakerybrown/api_services/api_config.dart';
@@ -8,8 +5,12 @@ import 'package:flutter/material.dart';
 import '../api_services/api_base_helper.dart';
 import '../model/cart_item_model.dart';
 import '../model/check_out_model.dart';
+import '../model/invoice_model.dart';
+import '../model/invoice_report_model.dart';
 import '../model/product_wholsaler_model.dart';
+import '../model/retailer_dashboard_model.dart';
 import '../model/retailer_order_model.dart';
+import '../model/wholesaler_dashboard_model.dart';
 
 
 class ProductsController extends GetxController {
@@ -17,9 +18,17 @@ class ProductsController extends GetxController {
   var productWholesalerList = ProductWholesalerListModel().obs;
   Future<ProductWholesalerListModel>getProductsWholesalerListApi({BuildContext? context}) async {
     var response = await ApiBaseHelper().getApiCall(context!,productsWholesalerListUrl);
-    print("response>>>>${response}");
     ProductWholesalerListModel modal = ProductWholesalerListModel.fromJson(response);
     productWholesalerList.value = modal;
+
+    return modal;
+  }
+
+  var wholesalerProductList = ProductWholesalerListModel().obs;
+  Future<ProductWholesalerListModel>getWholesalerProductListApi({BuildContext? context}) async {
+    var response = await ApiBaseHelper().getApiCall(context!,wholesalerProductListUrl);
+    ProductWholesalerListModel modal = ProductWholesalerListModel.fromJson(response);
+    wholesalerProductList.value = modal;
 
     return modal;
   }
@@ -50,7 +59,6 @@ class ProductsController extends GetxController {
   var cartItemList = CartItemModel().obs;
   Future<CartItemModel>getCartItemUrl({BuildContext? context}) async {
     var response = await ApiBaseHelper().getApiCall(context!,getItemUrl);
-    print("response>>>>${response}");
     CartItemModel modal = CartItemModel.fromJson(response);
     cartItemList.value = modal;
     Fluttertoast.showToast(msg: modal.message??"",
@@ -128,10 +136,48 @@ class ProductsController extends GetxController {
   var wholesalerOrderData = RetailerOrderModel().obs;
   Future<RetailerOrderModel>getWholesalerOrderApi({BuildContext? context}) async {
     var response = await ApiBaseHelper().getApiCall(context!,wholesalerOrderListUrl);
-
     RetailerOrderModel modal = RetailerOrderModel.fromJson(response);
     wholesalerOrderData.value = modal;
+    return modal;
+  }
 
+  var retailerToWholesalerOrderData = RetailerOrderModel().obs;
+  Future<RetailerOrderModel>getRetailerToWholesalerOrderApi({BuildContext? context}) async {
+    var response = await ApiBaseHelper().getApiCall(context!,retailerToWholesalerOrderUrl);
+    RetailerOrderModel modal = RetailerOrderModel.fromJson(response);
+    retailerToWholesalerOrderData.value = modal;
+    return modal;
+  }
+
+  var wholesalerDashboardData = WholesalerDashboardModel().obs;
+  Future<WholesalerDashboardModel>getWholesalerDashboardApi({BuildContext? context}) async {
+    var response = await ApiBaseHelper().getApiCall(context!,wholesalerDashboardUrl);
+    WholesalerDashboardModel modal = WholesalerDashboardModel.fromJson(response);
+    wholesalerDashboardData.value = modal;
+    return modal;
+  }
+  var wholesalerInvoicedData = InvoiceModel().obs;
+  Future<InvoiceModel>getWholesalerInvoiceApi({BuildContext? context}) async {
+    var response = await ApiBaseHelper().getApiCall(context!,wholesalerInvoiceUrl);
+    InvoiceModel modal = InvoiceModel.fromJson(response);
+    wholesalerInvoicedData.value = modal;
+    return modal;
+  }
+
+  var wholesalerInvoicedReportData = InvoiceReportModel().obs;
+  Future<InvoiceReportModel>getWholesalerInvoiceReportApi({BuildContext? context,String? invoiceId}) async {
+    String url = "$wholesalerInvoiceReportUrl/$invoiceId";
+    var response = await ApiBaseHelper().getApiCall(context!,url);
+    InvoiceReportModel modal = InvoiceReportModel.fromJson(response);
+    wholesalerInvoicedReportData.value = modal;
+    return modal;
+  }
+
+  var retailerDashboardData = RetailerDashboardModel().obs;
+  Future<RetailerDashboardModel>getRetailerDashboardApi({BuildContext? context,String? invoiceId}) async {
+    var response = await ApiBaseHelper().getApiCall(context!,retailerDashboardUrl);
+    RetailerDashboardModel modal = RetailerDashboardModel.fromJson(response);
+    retailerDashboardData.value = modal;
     return modal;
   }
 }

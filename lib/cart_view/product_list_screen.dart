@@ -155,7 +155,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     imageUrl: "$IP${productData?.img??""}",
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) => CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
                                   )),
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 6,vertical: 4),

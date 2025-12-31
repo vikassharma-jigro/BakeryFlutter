@@ -7,6 +7,7 @@ import '../app_utils/text_widget.dart';
 import 'package:get/get.dart';
 
 import '../cart_view/product_list_screen.dart';
+import '../getx_controller/product_controller.dart';
 
 
 
@@ -21,8 +22,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 TextEditingController searchController = TextEditingController();
+final ProductsController productsController = Get.put(ProductsController());
+
   @override
   void initState() {
+    Future.microtask(() {
+      productsController.getRetailerDashboardApi(context: context);
+    },);
     super.initState();
   }
 
@@ -238,54 +244,65 @@ TextEditingController searchController = TextEditingController();
                 fontFamily: FontFamily.interBold,
                 fontWeight: FontWeight.w600,
               ),
-              ListView.builder(
-                itemCount: 5,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: (){
-                    // Get.to(OutstandingBalanceScreen());
-                  },
-                  child: Card(
-                    color: softIvoryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+              Obx(
+                 () {
+                  return ListView.builder(
+                    itemCount: productsController.retailerDashboardData.value.recentActivity?.length??0,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      var recentActivity = productsController.retailerDashboardData.value.recentActivity?[index];
+                      String iso = recentActivity?.time??"";
+
+                      String date = iso.split("T")[0];      // 2025-12-23
+                      String time = iso.split("T")[1]
+                          .split(".")[0];
+                      return InkWell(
+                      onTap: (){
+                        // Get.to(OutstandingBalanceScreen());
+                      },
+                      child: Card(
+                        color: softIvoryColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.asset(AppImages.walletIcon,height: 40,),
-                              SizedBox(width: 10,),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  text(
-                                    "Order #1247 placed",
-                                    textColor: blackColor,
-                                    fontSize: 16,
-                                    fontFamily: FontFamily.interSansMedium,
-                                    fontWeight: FontWeight.w500,
-                                  ),text(
-                                    "2 hours ago",
-                                    textColor: darkGreyColor,
-                                    fontSize: 16,
-                                    fontFamily: FontFamily.interSansMedium,
-                                    fontWeight: FontWeight.w500,
+                                  Image.asset(AppImages.walletIcon,height: 40,),
+                                  SizedBox(width: 10,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      text(
+                                        recentActivity?.type??"",
+                                        textColor: blackColor,
+                                        fontSize: 16,
+                                        fontFamily: FontFamily.interSansMedium,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      text(
+                                        "${date} ${time}",
+                                        textColor: darkGreyColor,
+                                        fontSize: 16,
+                                        fontFamily: FontFamily.interSansMedium,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
+
+
                             ],
                           ),
-
-
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              },)
+                    );
+                  },);
+                }
+              )
             ],
           ),
         ),
