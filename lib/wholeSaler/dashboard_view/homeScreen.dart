@@ -314,12 +314,32 @@ class _WholeSalerHomescreenState extends State<WholeSalerHomescreen> {
                           textColor: dark1BrownColor,
                         ),
                         SizedBox(height: 10,),
-
-                        WholeSalerDashboard.DashBoardBarChartDetails("white_bread".tr, "89"),
-
-                        WholeSalerDashboard.DashBoardBarChartDetails("whole_wheat".tr, "76"),
-
-                        WholeSalerDashboard.DashBoardBarChartDetails("multigrain".tr, "54"),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: productsController.wholesalerDashboardData.value.analytics?.topSellingBreads?.length??0,
+                          itemBuilder: (context, index) {
+                            var topSellingData = productsController.wholesalerDashboardData.value.analytics?.topSellingBreads?[index];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              text(
+                                topSellingData?.name??"",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: FontFamily.interBold,
+                                textColor: dTextColor,
+                              ),
+                              text(
+                               "Units ${topSellingData?.units.toString()??""}",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: FontFamily.interBold,
+                                textColor: textBrownColor,
+                              ),
+                            ],
+                          );
+                        },)
                       ],
                     ),
                   ),

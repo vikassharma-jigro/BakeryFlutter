@@ -84,7 +84,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 text("Invoice", fontWeight: FontWeight.w500, fontSize: 18, fontFamily: FontFamily.interBold, textColor: blackColor),
-                                text("#${productsController.wholesalerInvoicedReportData.value.data?.invoiceId??""}", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: dTextColor),
+                                text("#${productsController.wholesalerInvoicedReportData.value.data?.orderId??""}", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: dTextColor),
                                 text("Invoice Date", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: dTextColor),
                                 text("Due Date", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: dTextColor),
                               ],
@@ -115,7 +115,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          text("Sweet Dreams Bakery", fontWeight: FontWeight.w500, fontSize: 18, fontFamily: FontFamily.interBold, textColor: blackColor),
+                          text(productsController.wholesalerInvoicedReportData.value.data?.retailer?.name??"", fontWeight: FontWeight.w500, fontSize: 18, fontFamily: FontFamily.interBold, textColor: blackColor),
                           SizedBox(height: 13,),
                           text(productsController.wholesalerInvoicedReportData.value.data?.storeAddress?.addressLine??"", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: darkGreyColor),
                           text(productsController.wholesalerInvoicedReportData.value.data?.storeAddress?.city??"", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: darkGreyColor),
@@ -138,7 +138,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       children: [
                         text("retailer_details".tr, fontWeight: FontWeight.w500, fontSize: 18, fontFamily: FontFamily.interBold, textColor: blackColor),
                         SizedBox(height: 13,),
-                        text("Corner Cafe & Bistro", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: blackColor),
+                        text(productsController.wholesalerInvoicedReportData.value.data?.retailer?.name??"", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: blackColor),
                         text(productsController.wholesalerInvoicedReportData.value.data?.storeAddress?.addressLine??"", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: darkGreyColor),
                         text(productsController.wholesalerInvoicedReportData.value.data?.storeAddress?.city??"", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: darkGreyColor),
                         text("Phone: ${productsController.wholesalerInvoicedReportData.value.data?.retailer?.phone??""}", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: darkGreyColor),

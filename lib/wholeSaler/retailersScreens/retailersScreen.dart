@@ -32,9 +32,6 @@ class _RetailersScreenState extends State<RetailersScreen> {
 
   @override
   void initState() {
-    super.initState();
-
-    /// First API Call
     Future.microtask(() {
       authController.page.value = 1;
       //authController.hasMore.value = true;
@@ -44,6 +41,10 @@ class _RetailersScreenState extends State<RetailersScreen> {
         search: "",
       );
     });
+    super.initState();
+
+    /// First API Call
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent &&
@@ -150,23 +151,25 @@ class _RetailersScreenState extends State<RetailersScreen> {
               borderColor: brownColor,
               fillColor: lightWhiteColor,
               onChanged: (v) {
-                authController.page.value = 1;
+                //authController.page.value = 1;
                 //authController.hasMore.value = true;
                 authController.getRetailerListApi(
                   context: context,
                   status: getStatus(),
-                  search: _searchController.text,
+                  isSearch: true,
+                  search: v,
                 );
               },
-              onTap: (){
-                authController.page.value = 1;
-                //authController.hasMore.value = true;
-                authController.getRetailerListApi(
-                  context: context,
-                  status: getStatus(),
-                  search: _searchController.text,
-                );
-              },
+              // onTap: (){
+              //   authController.page.value = 1;
+              //   //authController.hasMore.value = true;
+              //   authController.getRetailerListApi(
+              //     context: context,
+              //     status: getStatus(),
+              //
+              //     search: _searchController.text,
+              //   );
+              // },
             ),
 
             const SizedBox(height: 20),

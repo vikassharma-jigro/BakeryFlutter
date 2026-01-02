@@ -159,13 +159,20 @@ class AuthController extends GetxController {
   var hasMore = true.obs;
 
   Future<RetailerListModel> getRetailerListApi({
-    BuildContext? context,
+    required BuildContext context,
     var status,
     var search,
     bool isLoadMore = false,
+    bool isSearch = false,
   }) async {
 
-    if (isLoadingPage.value || !hasMore.value) {
+    /// 🔍 SEARCH START
+    if (isSearch) {
+      page.value = 1;
+      hasMore.value = true;
+    }
+
+    if (isLoadingPage.value || (!hasMore.value && isLoadMore)) {
       return retailerListModel.value;
     }
 
@@ -178,31 +185,41 @@ class AuthController extends GetxController {
         "&page=${page.value}"
         "&limit=$limit";
 
-    print("API URL >>> $url");
-
-    var response = await ApiBaseHelper().getApiCall(context!, url);
+    var response = await ApiBaseHelper().getApiCall(context, url);
     RetailerListModel modal = RetailerListModel.fromJson(response);
 
-    /// 🔹 LOAD MORE (Page 2,3...)
+    /// 🔹 LOAD MORE
     if (isLoadMore) {
+
       if (modal.data != null && modal.data!.isNotEmpty) {
         retailerListModel.value.data!.addAll(modal.data!);
-        page.value++; // ✅ data aaya tabhi page++
+        page.value++;
       } else {
-        hasMore.value = false; // ❗ page 2 empty → page 1 ka data rahega
+        hasMore.value = false;
+      }
+
+    }
+
+    /// 🔹 FIRST PAGE (normal / search)
+    else {
+
+      if (modal.data != null && modal.data!.isNotEmpty) {
+        retailerListModel.value = modal;
+        page.value = 2;
+        hasMore.value = modal.data!.length == limit;
+      } else {
+        /// ❗ SEARCH + NO DATA
+        if (isSearch) {
+          retailerListModel.value.data?.clear(); // ❌ old data remove
+        }
+        hasMore.value = false;
       }
     }
 
-    /// 🔹 FIRST PAGE
-    else {
-      retailerListModel.value = modal;
-      page.value = 2; // next page ready
-      hasMore.value = (modal.data?.length ?? 0) == limit;
-    }
-
     isLoadingPage.value = false;
-    return modal;
+    return retailerListModel.value;
   }
+
 
   var profileData = ProfileData().obs;
   Future<ProfileModel>getProfileApi({BuildContext? context,var status,var search}) async {

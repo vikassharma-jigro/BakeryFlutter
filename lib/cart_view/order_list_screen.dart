@@ -29,7 +29,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
   @override
   void initState() {
     Future.microtask(() {
-      productsController.getRetailerOrderListApi(context: context);
+      productsController.getRetailerOrderListApi(context: context,to: "",from: "");
     },);
     super.initState();
   }
@@ -174,7 +174,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                text(retailerOrderData?.orderId??"",
+                                text(retailerOrderData?.Id??"",
                                     textColor: dark1BrownColor,
                                     isCentered: true,
                                     fontWeight: FontWeight.w600,
@@ -336,7 +336,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
         .then((selectedDate) {
       if (selectedDate != null) {
         dateTo = DateFormat('yyyy-MM-dd').format(selectedDate);
-        print("date>>>>${date}");
+        productsController.getRetailerOrderListApi(context: context,to: dateTo,from: date);
         toController.text = DateFormat('dd-MM-yyyy').format(selectedDate);
       }
     });

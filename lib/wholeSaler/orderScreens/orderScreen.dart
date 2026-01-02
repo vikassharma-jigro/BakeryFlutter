@@ -201,7 +201,7 @@ class _OrderscreenState extends State<Orderscreen> {
                       //     .split(".")[0];
                       return WholeSalerDashboard.OrdersDetailsCard(
                         AppImages.homeIcon,
-                        wholesalerOrderData?.orderId??"",
+                        wholesalerOrderData?.Id??"",
                         wholesalerOrderData?.quantity.toString()??"",
                         wholesalerOrderData?.productName??"",
                         date,

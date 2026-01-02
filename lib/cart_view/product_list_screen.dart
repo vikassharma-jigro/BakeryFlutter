@@ -28,7 +28,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   void initState() {
     Future.microtask(() {
-      productsController.getProductsWholesalerListApi(context: context);
+      productsController.getProductsWholesalerListApi(context: context,search: "",sort: "");
     },);
     super.initState();
   }
@@ -117,6 +117,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       fillColor: softIvoryColor,
                       hintText: "search_products..".tr,
                     ),
+                    onChanged: (v){
+                      productsController.getProductsWholesalerListApi(context: context,search: searchController.text,sort: "");
+                    },
                   ),
                 ],
               ),
@@ -153,7 +156,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
                                   child: CachedNetworkImage(
                                     imageUrl: "$IP${productData?.img??""}",
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.cover,height: 120,width: 157,
                                     placeholder: (context, url) => CircularProgressIndicator(),
                                     errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
                                   )),

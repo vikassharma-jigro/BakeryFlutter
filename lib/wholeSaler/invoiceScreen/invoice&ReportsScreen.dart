@@ -146,7 +146,7 @@ class _InvoiceReportScreenState extends State<InvoiceReportScreen> {
                                     crossAxisAlignment : CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      text(invoiceData?.invoiceId??"", fontWeight: FontWeight.w400, fontSize: 16, fontFamily: FontFamily.interRegular, textColor: dark1BrownColor),
+                                      text(invoiceData?.orderId??"", fontWeight: FontWeight.w400, fontSize: 16, fontFamily: FontFamily.interRegular, textColor: dark1BrownColor),
                                       text(invoiceData?.storeName??"", fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: darkGreyColor),
                                       text(date, fontWeight: FontWeight.w400, fontSize: 14, fontFamily: FontFamily.interRegular, textColor: darkGreyColor),
                                       text("€${invoiceData?.amount??""}", fontWeight: FontWeight.w700, fontSize: 18, fontFamily: FontFamily.interBold, textColor: dark1BrownColor),
@@ -191,8 +191,36 @@ class _InvoiceReportScreenState extends State<InvoiceReportScreen> {
                   SizedBox(
                     height: 10,
                   ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF2E6D8),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Monthly Sales & Due Reports",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.brown,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(child: salesCard()),
+                            const SizedBox(width: 12),
+                            Expanded(child: dueCard()),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
 
-                  Image.asset("assets/images/div-10.png", width: double.infinity, fit: BoxFit.cover,),
+                  //Image.asset("assets/images/div-10.png", width: double.infinity, fit: BoxFit.cover,),
                   SizedBox(
                     height: 20,
                   ),
@@ -204,4 +232,190 @@ class _InvoiceReportScreenState extends State<InvoiceReportScreen> {
       ),
     );
   }
+  Widget salesCard() {
+    final List<double> salesList =
+        productsController.wholesalerInvoicedData
+            .value
+            .monthlyTotals
+            ?.salesGraph ??
+            [];
+
+    if (salesList.isEmpty) {
+      return _emptySalesCard();
+    }
+
+    final double maxValue =
+    salesList.reduce((a, b) => a > b ? a : b);
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Sales Report",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          /// 📊 Dynamic Bar Chart
+          SizedBox(
+            height: 80,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: salesList.map((value) {
+                return animatedBar(
+                  value: value,
+                  maxValue: maxValue,
+                );
+              }).toList(),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+          text(
+            "₹${productsController.wholesalerInvoicedData.value.monthlyTotals?.totalSales ?? 0} this month",
+            textColor: blackColor,
+            fontFamily: FontFamily.interRegular,
+            fontWeight: FontWeight.w400,
+            fontSize: 15,
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget animatedBar({
+    required double value,
+    required double maxValue,
+    double maxHeight = 80,
+  }) {
+    final barHeight = maxValue == 0
+        ? 0
+        : (value / maxValue) * maxHeight;
+
+    return Expanded(
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: double.parse(barHeight.toString())),
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeOut,
+        builder: (context, height, _) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: height,
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  color: Colors.brown,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+  Widget _emptySalesCard() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: const [
+          Text(
+            "Sales Report",
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+          SizedBox(height: 20),
+          Text(
+            "No sales data available",
+            style: TextStyle(color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget dueCard() {
+    final pending = productsController
+        .wholesalerInvoicedData.value.monthlyTotals?.totalPending ??
+        0;
+
+    final total = productsController
+        .wholesalerInvoicedData.value.monthlyTotals?.totalPending ??
+        1;
+
+    final percent = pending / total;
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Due Amount",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          /// ⭕ Dynamic Circle
+          Center(child: dueCircle(percent)),
+
+          const SizedBox(height: 8),
+
+          text(
+            "₹$pending pending",
+            textColor: blackColor,
+            fontFamily: FontFamily.interRegular,
+            fontWeight: FontWeight.w400,
+            fontSize: 15,
+          )
+        ],
+      ),
+    );
+  }
+  Widget dueCircle(double percent) {
+    return SizedBox(
+      height: 80,
+      width: 80,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          CircularProgressIndicator(
+            value: percent,
+            strokeWidth: 6,
+            backgroundColor: Colors.brown.shade100,
+            valueColor: AlwaysStoppedAnimation(Colors.brown),
+          ),
+          Text(
+            "${(percent * 100).toInt()}%",
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+
 }

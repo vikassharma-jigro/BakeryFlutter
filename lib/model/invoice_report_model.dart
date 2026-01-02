@@ -19,8 +19,9 @@ class InvoiceReportModel {
   }
 }
 
-class InvoiceReportData {
+class   InvoiceReportData {
   String? invoiceId;
+  String? orderId;
   String? invoiceDate;
   String? dueDate;
   Retailer? retailer;
@@ -31,6 +32,7 @@ class InvoiceReportData {
 
   InvoiceReportData(
       {this.invoiceId,
+        this.orderId,
         this.invoiceDate,
         this.dueDate,
         this.retailer,
@@ -41,6 +43,7 @@ class InvoiceReportData {
 
   InvoiceReportData.fromJson(Map<String, dynamic> json) {
     invoiceId = json['invoiceId'];
+    orderId = json['orderId'];
     invoiceDate = json['invoiceDate'];
     dueDate = json['dueDate'];
     retailer = json['retailer'] != null
@@ -65,6 +68,7 @@ class InvoiceReportData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['invoiceId'] = this.invoiceId;
+    data['orderId'] = this.orderId;
     data['invoiceDate'] = this.invoiceDate;
     data['dueDate'] = this.dueDate;
     if (this.retailer != null) {
@@ -90,13 +94,15 @@ class Retailer {
   String? name;
   int? phone;
   String? email;
+  String? shopName;
 
-  Retailer({this.name, this.phone, this.email});
+  Retailer({this.name, this.phone, this.email, this.shopName});
 
   Retailer.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     phone = json['phone'];
     email = json['email'];
+    shopName = json['shopName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -104,6 +110,7 @@ class Retailer {
     data['name'] = this.name;
     data['phone'] = this.phone;
     data['email'] = this.email;
+    data['shopName'] = this.shopName;
     return data;
   }
 }

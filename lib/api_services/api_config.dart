@@ -21,6 +21,8 @@ const String wholesalerDashboardUrl = 'dashboard/get-wholesaler-dashboard';
 const String wholesalerInvoiceUrl = 'invoice/get-wholesaler-invoice';
 const String wholesalerInvoiceReportUrl = 'invoice/get-wholesaler-invoice-report';
 const String retailerDashboardUrl = 'dashboard/get-retailer-dashboard';
+const String retailerAccountsUrl = 'accounts/get-retailer-accounts';
+const String wholesalerAccountsUrl = 'accounts/get-wholesaler-accounts';
 
 ///delivery Api
 const String deliveryOrderUrl = 'delivery/get-delivery-orders';

@@ -1,11 +1,15 @@
 class InvoiceModel {
   bool? success;
+  MonthlyTotals? monthlyTotals;
   List<InvoiceData>? data;
 
-  InvoiceModel({this.success, this.data});
+  InvoiceModel({this.success, this.monthlyTotals, this.data});
 
   InvoiceModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+    monthlyTotals = json['monthlyTotals'] != null
+        ? new MonthlyTotals.fromJson(json['monthlyTotals'])
+        : null;
     if (json['data'] != null) {
       data = <InvoiceData>[];
       json['data'].forEach((v) {
@@ -17,6 +21,9 @@ class InvoiceModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
+    if (this.monthlyTotals != null) {
+      data['monthlyTotals'] = this.monthlyTotals!.toJson();
+    }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -24,16 +31,45 @@ class InvoiceModel {
   }
 }
 
+class MonthlyTotals {
+  var totalSales;
+ var totalPending;
+
+  /// 🔹 STATIC GRAPH DATA (UI ONLY)
+  List<double> salesGraph = [12000, 18000, 9000, 6600];
+
+  MonthlyTotals({
+    this.totalSales,
+    this.totalPending,
+  });
+
+  MonthlyTotals.fromJson(Map<String, dynamic> json) {
+    totalSales = (json['totalSales'] ?? 0).toDouble();
+    totalPending = (json['totalPending'] ?? 0).toDouble();
+    // ❌ salesGraph ko JSON se mat uthao
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['totalSales'] = totalSales;
+    data['totalPending'] = totalPending;
+    // ❌ salesGraph ko API me mat bhejo
+    return data;
+  }
+}
+
 class InvoiceData {
   String? invoiceId;
+  String? orderId;
   String? storeName;
   String? invoiceDate;
   String? paymentMode;
   String? paymentStatus;
-  var amount;
+  double? amount;
 
   InvoiceData(
       {this.invoiceId,
+        this.orderId,
         this.storeName,
         this.invoiceDate,
         this.paymentMode,
@@ -42,6 +78,7 @@ class InvoiceData {
 
   InvoiceData.fromJson(Map<String, dynamic> json) {
     invoiceId = json['invoiceId'];
+    orderId = json['orderId'];
     storeName = json['storeName'];
     invoiceDate = json['invoiceDate'];
     paymentMode = json['paymentMode'];
@@ -52,6 +89,7 @@ class InvoiceData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['invoiceId'] = this.invoiceId;
+    data['orderId'] = this.orderId;
     data['storeName'] = this.storeName;
     data['invoiceDate'] = this.invoiceDate;
     data['paymentMode'] = this.paymentMode;

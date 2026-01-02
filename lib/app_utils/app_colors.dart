@@ -25,6 +25,8 @@ const Color dTextColor = Color(0xff6b7280);
 const Color blueColor = Color(0xff2563eb);
 const Color lightBoxColor = Color(0xfff3e7d9);
 const Color lightYellow = Color(0xfffef9c3);
+const Color paymentColor = Color(0xffffedd5);
+const Color orangeColor = Color(0xfffb923c);
 
 
 

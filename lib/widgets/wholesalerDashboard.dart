@@ -280,7 +280,7 @@ class WholeSalerDashboard{
           ),
           SizedBox(height: 10),
           text(
-            "€2,45,000",
+            title,
             fontSize: 24,
             textColor: blackColor,
             fontWeight: FontWeight.w700,
@@ -288,7 +288,7 @@ class WholeSalerDashboard{
           ),
           SizedBox(height: 10),
           text(
-            "Amount to receive",
+            subTitle,
             fontSize: 12,
             textColor: blackColor,
             fontWeight: FontWeight.w400,

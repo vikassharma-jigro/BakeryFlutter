@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../app_utils/font_family.dart';
 import '../app_utils/text_widget.dart';
+import '../getx_controller/accounts_controller.dart';
 
 
 
@@ -24,44 +25,16 @@ class _AccountsScreenState extends State<AccountsScreen> {
 dynamic date;
 dynamic dateTo;
   bool isOn = false;
+  final AccountsController accountsController = Get.put(AccountsController());
+
   @override
   void initState() {
+    Future.microtask(() {
+      accountsController.getRetailerAccountsApi(context: context,from: "",to: "");
+    },);
     super.initState();
   }
-  List<Map<String, dynamic>> orderList = [
-    {
-      "name": "Jan 15, 2024 • 9:30 AM",
-      "orderID": "#ORD-2461",
-      "price": "€1,240",
-      "orderStatus": "Paid",
-      "itemName":"Cakes, Cookies, Donuts"
-    },
-    {
-      "name": "Jan 14, 2024 • 2:15 PM",
-      "orderID": "#ORD-2459",
-      "price": "€1,240",
-      "orderStatus": "Paid",
-      "item":"10 Items",
-      "itemName":"Bagels, Pastries"
-    },
-    {
-      "name": "Jan 13, 2024 • 11:45 AM",
-      "orderID": "#ORD-2460",
-      "price": "€1,240",
-      "orderStatus": "Pending",
-      "item":"13 Items",
-      "itemName":"Sourdough, Rolls"
-    },
-    {
-      "name": "Jan 12, 2024 • 11:30 AM",
-      "orderID": "#ORD-2434",
-      "price": "€1,240",
-      "orderStatus": "Pending",
-      "item":"22 Items",
-      "itemName":"Baguettes, Cupcakes"
 
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -85,441 +58,449 @@ dynamic dateTo;
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: white,),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Obx(() {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: white,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        text("total_factory".tr,
-                            textColor: brownColor,
-                            isCentered: true,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            fontFamily: FontFamily.interSansMedium
-                        ),
-                        Image.asset(AppImages.checkIcon,height: 50,),
-                      ],
-                    ),
-                    text("€70,000",
-                        textColor: dark1BrownColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24,
-                        fontFamily: FontFamily.interBold
-                    ),
-                    text("total_date".tr,
-                        textColor: darkGreyColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        fontFamily: FontFamily.interRegular
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 10,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: white,),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        text("pending_amount".tr,
-                            textColor: brownColor,
-                            isCentered: true,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            fontFamily: FontFamily.interSansMedium
-                        ),
-                        Image.asset(AppImages.errorIcon,height: 50,),
-                      ],
-                    ),
-                    text("€20,000",
-                        textColor: dark1BrownColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24,
-                        fontFamily: FontFamily.interBold
-                    ),
-                    text("remaining_balance".tr,
-                        textColor: darkGreyColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        fontFamily: FontFamily.interRegular
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: white,),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        text("today_cost_report".tr,
-                            textColor: brownColor,
-                            isCentered: true,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                            fontFamily: FontFamily.interSansMedium
-                        ),
-                        Image.asset(AppImages.calenderIcon,height: 50,),
-                      ],
-                    ),
-                    text("€70,000",
-                        textColor: dark1BrownColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24,
-                        fontFamily: FontFamily.interBold
-                    ),
-                    text("cost_incurred_today".tr,
-                        textColor: darkGreyColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        fontFamily: FontFamily.interRegular
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: white,),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    text("daily_cost_report".tr,
-                        textColor: dark1BrownColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                        fontFamily: FontFamily.interBold
-                    ),
-                    SizedBox(height: 15,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        text("Date",
-                            textColor: dark1BrownColor,
-                            isCentered: true,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            fontFamily: FontFamily.interBold
-                        ),
-                        text("items".tr,
-                            textColor: dark1BrownColor,
-                            isCentered: true,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            fontFamily: FontFamily.interBold
-                        ),
-                        text("cost".tr,
-                            textColor: dark1BrownColor,
-                            isCentered: true,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            fontFamily: FontFamily.interBold
-                        ),
-                        text("status".tr,
-                            textColor: dark1BrownColor,
-                            isCentered: true,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            fontFamily: FontFamily.interBold
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 15,),
-                    ListView.builder(
-                      itemCount: 5,
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            text("Nov 25",
-                                textColor: darkGreyColor,
+                            text("total_factory".tr,
+                                textColor: brownColor,
                                 isCentered: true,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                fontFamily: FontFamily.interRegular
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                fontFamily: FontFamily.interSansMedium
                             ),
-                            SizedBox(width: 3,),
-                            text("Flour, Sugar",
-                                textColor: darkGreyColor,
-                                isCentered: true,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                fontFamily: FontFamily.interRegular
-                            ),
-                            SizedBox(width: 3,),
-                            //Spacer(),
-                            text("€2,500",
-                                textColor: dark1BrownColor,
-                                isCentered: true,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                fontFamily: FontFamily.interRegular
-                            ),
-                            SizedBox(width: 20,),
-                            //Spacer(),
-                            text("Paid",
-                                textColor: greenColor,
-                                isCentered: true,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                fontFamily: FontFamily.interRegular
-                            ),
+                            Image.asset(AppImages.checkIcon,height: 50,),
                           ],
                         ),
-                      );
-                    },)
-                  ],
-                ),
-              ),
-              SizedBox(height: 10,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: lightBrownColor,),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(AppImages.notificationIcon,height: 50,),
-                        SizedBox(width: 10,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            text("payment_reminder".tr,
-                                textColor: dark1BrownColor,
-                                isCentered: true,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                fontFamily: FontFamily.interBold
-                            ),
-                            text("retailer_reminder_active".tr,
-                                textColor: darkGreyColor,
-                                isCentered: true,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                fontFamily: FontFamily.interRegular
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Divider(),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        text("weekly_reminder".tr,
+                        text("€${accountsController.retailerAccountsData.value.summary?.paidAmount??""}",
                             textColor: dark1BrownColor,
                             isCentered: true,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 24,
+                            fontFamily: FontFamily.interBold
+                        ),
+                        text("total_date".tr,
+                            textColor: darkGreyColor,
+                            isCentered: true,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            fontFamily: FontFamily.interSansMedium
+                            fontSize: 12,
+                            fontFamily: FontFamily.interRegular
                         ),
-         Switch(
-          value: isOn,
-          activeColor: white,          // Thumb color On
-          activeTrackColor: dark1BrownColor,     // Track On
-          inactiveThumbColor: white,   // Thumb Off
-          inactiveTrackColor: lightBrownColor,    // Track Off
-          onChanged: (val) {
-            setState(() {
-              isOn = val;
-            });
-          },
-        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10,),
-              Container(
-                margin: EdgeInsets.all(5),
-                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: white,),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    text("transaction_history".tr,
-                        textColor: blackColor,
-                        isCentered: true,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                        fontFamily: FontFamily.interBold
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+
+                  SizedBox(height: 10,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: white,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 130,
-                          child: CustomRoundTextField(
-                            readOnly: true,
-                            controller:fromController,
-                            onTap: (){
-                              calenderForGetDay(context);
-                            },
-                            keyboardType: TextInputType.name,
-                            hintText: "from".tr,
-                            borderColor: borderColor,
-                            hintColor: blackColor,
-                            hintSize: 10,
-                            maxLines: 2,
-                            fillColor: white,
-                            borderRadius: 15,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            text("pending_amount".tr,
+                                textColor: brownColor,
+                                isCentered: true,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                fontFamily: FontFamily.interSansMedium
+                            ),
+                            Image.asset(AppImages.errorIcon,height: 50,),
+                          ],
                         ),
-                        SizedBox(
-                          width: 130,
-                          child: CustomRoundTextField(
-                            readOnly: true,
-                            controller: toController,
-                            onTap: (){
-                              calenderForGetDayTo(context);
-                            },
-                            keyboardType: TextInputType.name,
-                            hintText: "to".tr,
-                            borderColor: borderColor,
-                            hintColor: blackColor,
-                            hintSize: 10,
-                            maxLines: 2,
-                            fillColor: white,
-                            borderRadius: 15,
-                          ),
+                        text("€${accountsController.retailerAccountsData.value.summary?.pendingAmount??""}",
+                            textColor: dark1BrownColor,
+                            isCentered: true,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 24,
+                            fontFamily: FontFamily.interBold
+                        ),
+                        text("remaining_balance".tr,
+                            textColor: darkGreyColor,
+                            isCentered: true,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            fontFamily: FontFamily.interRegular
                         ),
                       ],
                     ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: white,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            text("today_cost_report".tr,
+                                textColor: brownColor,
+                                isCentered: true,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15,
+                                fontFamily: FontFamily.interSansMedium
+                            ),
+                            Image.asset(AppImages.calenderIcon,height: 50,),
+                          ],
+                        ),
+                        text("€${accountsController.retailerAccountsData.value.summary?.totalAmount??""}",
+                            textColor: dark1BrownColor,
+                            isCentered: true,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 24,
+                            fontFamily: FontFamily.interBold
+                        ),
+                        text("cost_incurred_today".tr,
+                            textColor: darkGreyColor,
+                            isCentered: true,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            fontFamily: FontFamily.interRegular
+                        ),
+                      ],
+                    ),
+                  ),
+                 /* SizedBox(height: 10,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: white,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        text("daily_cost_report".tr,
+                            textColor: dark1BrownColor,
+                            isCentered: true,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            fontFamily: FontFamily.interBold
+                        ),
+                        SizedBox(height: 15,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            text("Date",
+                                textColor: dark1BrownColor,
+                                isCentered: true,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                fontFamily: FontFamily.interBold
+                            ),
+                            text("items".tr,
+                                textColor: dark1BrownColor,
+                                isCentered: true,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                fontFamily: FontFamily.interBold
+                            ),
+                            text("cost".tr,
+                                textColor: dark1BrownColor,
+                                isCentered: true,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                fontFamily: FontFamily.interBold
+                            ),
+                            text("status".tr,
+                                textColor: dark1BrownColor,
+                                isCentered: true,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                fontFamily: FontFamily.interBold
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15,),
+                        ListView.builder(
+                          itemCount: 5,
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text("Nov 25",
+                                    textColor: darkGreyColor,
+                                    isCentered: true,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    fontFamily: FontFamily.interRegular
+                                ),
+                                SizedBox(width: 3,),
+                                text("Flour, Sugar",
+                                    textColor: darkGreyColor,
+                                    isCentered: true,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    fontFamily: FontFamily.interRegular
+                                ),
+                                SizedBox(width: 3,),
+                                //Spacer(),
+                                text("€2,500",
+                                    textColor: dark1BrownColor,
+                                    isCentered: true,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    fontFamily: FontFamily.interRegular
+                                ),
+                                SizedBox(width: 20,),
+                                //Spacer(),
+                                text("Paid",
+                                    textColor: greenColor,
+                                    isCentered: true,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    fontFamily: FontFamily.interRegular
+                                ),
+                              ],
+                            ),
+                          );
+                        },)
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: lightBrownColor,),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(AppImages.notificationIcon,height: 50,),
+                            SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                text("payment_reminder".tr,
+                                    textColor: dark1BrownColor,
+                                    isCentered: true,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                    fontFamily: FontFamily.interBold
+                                ),
+                                text("retailer_reminder_active".tr,
+                                    textColor: darkGreyColor,
+                                    isCentered: true,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    fontFamily: FontFamily.interRegular
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Divider(),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            text("weekly_reminder".tr,
+                                textColor: dark1BrownColor,
+                                isCentered: true,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                                fontFamily: FontFamily.interSansMedium
+                            ),
+             Switch(
+              value: isOn,
+              activeColor: white,          // Thumb color On
+              activeTrackColor: dark1BrownColor,     // Track On
+              inactiveThumbColor: white,   // Thumb Off
+              inactiveTrackColor: lightBrownColor,    // Track Off
+              onChanged: (val) {
+                setState(() {
+                  isOn = val;
+                });
+              },
+            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),*/
+                  SizedBox(height: 10,),
+                  Container(
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: white,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        text("transaction_history".tr,
+                            textColor: blackColor,
+                            isCentered: true,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            fontFamily: FontFamily.interBold
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 130,
+                              child: CustomRoundTextField(
+                                readOnly: true,
+                                controller:fromController,
+                                onTap: (){
+                                  calenderForGetDay(context);
+                                },
+                                keyboardType: TextInputType.name,
+                                hintText: "from".tr,
+                                borderColor: borderColor,
+                                hintColor: blackColor,
+                                hintSize: 10,
+                                maxLines: 2,
+                                fillColor: white,
+                                borderRadius: 15,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 130,
+                              child: CustomRoundTextField(
+                                readOnly: true,
+                                controller: toController,
+                                onTap: (){
+                                  calenderForGetDayTo(context);
+                                },
+                                keyboardType: TextInputType.name,
+                                hintText: "to".tr,
+                                borderColor: borderColor,
+                                hintColor: blackColor,
+                                hintSize: 10,
+                                maxLines: 2,
+                                fillColor: white,
+                                borderRadius: 15,
+                              ),
+                            ),
+                          ],
+                        ),
 
-                    SizedBox(height: 5,),
-                    ListView.builder(
-                      itemCount: orderList.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
+                        SizedBox(height: 5,),
+                        ListView.builder(
+                          itemCount: accountsController.retailerAccountsData.value.transactions?.length??0,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                           var transactionData = accountsController.retailerAccountsData.value.transactions?[index];
+                           String iso = transactionData?.date??"";
 
-                        return Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: softIvoryColor,),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                           String date = iso.split("T")[0];      // 2025-12-23
+                           String time = iso.split("T")[1]
+                               .split(".")[0];
+                           return Container(
+                              margin: EdgeInsets.all(5),
+                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: softIvoryColor,),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  text(orderList[index]["name"],
-                                      textColor: darkGreyColor,
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      text("${date} ${time}",
+                                          textColor: darkGreyColor,
+                                          isCentered: true,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                          fontFamily: FontFamily.interRegular
+                                      ),
+                                      text("€${transactionData?.amount.toString()??""}",
+                                          textColor: dark1BrownColor,
+                                          isCentered: true,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18,
+                                          fontFamily: FontFamily.interBold
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      text(transactionData?.orderId??"",
+                                          textColor: dark1BrownColor,
+                                          isCentered: true,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          fontFamily: FontFamily.interBold
+                                      ),
+
+
+                                      Container(
+
+                                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: transactionData?.paymentStatus=="pending"?redColor.withOpacity(.1):greenColor.withOpacity(.1)
+                                        ),
+                                        child: text(transactionData?.paymentStatus?.capitalizeFirst??"",
+                                            textColor: transactionData?.paymentStatus=="pending"?redColor:greenColor,
+                                            isCentered: true,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12,
+                                            fontFamily: FontFamily.interBold
+                                        ),
+                                      ),
+
+
+                                    ],
+                                  ),
+
+                                  text(transactionData?.products?.toString()??"0",
+                                      textColor: textBrown,
                                       isCentered: true,
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.w500,
                                       fontSize: 12,
                                       fontFamily: FontFamily.interRegular
                                   ),
-                                  text(orderList[index]["price"],
-                                      textColor: dark1BrownColor,
-                                      isCentered: true,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      fontFamily: FontFamily.interBold
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  text(orderList[index]["orderID"],
-                                      textColor: dark1BrownColor,
-                                      isCentered: true,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      fontFamily: FontFamily.interBold
-                                  ),
-
-
-                                  Container(
-
-                                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: orderList[index]["orderStatus"]=="Pending"?redColor.withOpacity(.1):greenColor.withOpacity(.1)
-                                    ),
-                                    child: text(orderList[index]["orderStatus"],
-                                        textColor: orderList[index]["orderStatus"]=="Pending"?redColor:greenColor,
-                                        isCentered: true,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
-                                        fontFamily: FontFamily.interBold
-                                    ),
-                                  ),
-
 
                                 ],
                               ),
-
-                              text(orderList[index]["itemName"],
-                                  textColor: textBrown,
-                                  isCentered: true,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                  fontFamily: FontFamily.interRegular
-                              ),
-
-                            ],
-                          ),
-                        );
-                      },),
-                  ],
-                ),
+                            );
+                          },),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        }
       ),
 
     );
@@ -554,7 +535,6 @@ dynamic dateTo;
         .then((selectedDate) {
       if (selectedDate != null) {
         date = DateFormat('yyyy-MM-dd').format(selectedDate);
-        print("date>>>>${date}");
         fromController.text = DateFormat('dd-MM-yyyy').format(selectedDate);
         //toController.text = DateFormat('dd-MM-yyyy').format(selectedDate);
       }
@@ -590,8 +570,8 @@ dynamic dateTo;
         .then((selectedDate) {
       if (selectedDate != null) {
         dateTo = DateFormat('yyyy-MM-dd').format(selectedDate);
-        print("date>>>>${date}");
         toController.text = DateFormat('dd-MM-yyyy').format(selectedDate);
+        accountsController.getRetailerAccountsApi(context: context,from: date,to: dateTo);
       }
     });
   }

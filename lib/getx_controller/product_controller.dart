@@ -16,8 +16,9 @@ import '../model/wholesaler_dashboard_model.dart';
 class ProductsController extends GetxController {
   var isLoading = false.obs;
   var productWholesalerList = ProductWholesalerListModel().obs;
-  Future<ProductWholesalerListModel>getProductsWholesalerListApi({BuildContext? context}) async {
-    var response = await ApiBaseHelper().getApiCall(context!,productsWholesalerListUrl);
+  Future<ProductWholesalerListModel>getProductsWholesalerListApi({BuildContext? context,var search,var sort}) async {
+    final url = "$productsWholesalerListUrl?search=$search&sort=$sort";
+    var response = await ApiBaseHelper().getApiCall(context!,url);
     ProductWholesalerListModel modal = ProductWholesalerListModel.fromJson(response);
     productWholesalerList.value = modal;
 
@@ -124,8 +125,9 @@ class ProductsController extends GetxController {
     return modal;
   }
   var retailerOrderData = RetailerOrderModel().obs;
-  Future<RetailerOrderModel>getRetailerOrderListApi({BuildContext? context}) async {
-    var response = await ApiBaseHelper().getApiCall(context!,retailerOrderListUrl);
+  Future<RetailerOrderModel>getRetailerOrderListApi({BuildContext? context,var from,var to}) async {
+    final url = "$retailerOrderListUrl?fromDate=$from&toDate=$to";
+    var response = await ApiBaseHelper().getApiCall(context!,url);
 
     RetailerOrderModel modal = RetailerOrderModel.fromJson(response);
     retailerOrderData.value = modal;

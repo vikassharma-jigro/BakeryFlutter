@@ -46,7 +46,7 @@ class WholeSalerBreadCatalog {
             ),
             child: CachedNetworkImage(
               imageUrl: imgPath,
-              fit: BoxFit.cover,
+              fit: BoxFit.cover,height: 120,width: 157,
               placeholder: (context, url) => Image.asset(AppImages.multigrainbread),
               errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
             ),

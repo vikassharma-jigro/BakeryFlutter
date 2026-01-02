@@ -62,7 +62,7 @@ class Cards {
 
 class Analytics {
   List<Last7DaysRetailerOrders>? last7DaysRetailerOrders;
-  List<Null>? topSellingBreads;
+  List<TopSellingBreads>? topSellingBreads;
 
   Analytics({this.last7DaysRetailerOrders, this.topSellingBreads});
 
@@ -73,12 +73,12 @@ class Analytics {
         last7DaysRetailerOrders!.add(new Last7DaysRetailerOrders.fromJson(v));
       });
     }
-    // if (json['topSellingBreads'] != null) {
-    //   topSellingBreads = <Null>[];
-    //   // json['topSellingBreads'].forEach((v) {
-    //   //   topSellingBreads!.add(new Null.fromJson(v));
-    //   // });
-    // }
+    if (json['topSellingBreads'] != null) {
+      topSellingBreads = <TopSellingBreads>[];
+      json['topSellingBreads'].forEach((v) {
+        topSellingBreads!.add(new TopSellingBreads.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -87,10 +87,10 @@ class Analytics {
       data['last7DaysRetailerOrders'] =
           this.last7DaysRetailerOrders!.map((v) => v.toJson()).toList();
     }
-    // if (this.topSellingBreads != null) {
-    //   data['topSellingBreads'] =
-    //       this.topSellingBreads!.map((v) => v.toJson()).toList();
-    // }
+    if (this.topSellingBreads != null) {
+      data['topSellingBreads'] =
+          this.topSellingBreads!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -110,6 +110,25 @@ class Last7DaysRetailerOrders {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['date'] = this.date;
     data['orders'] = this.orders;
+    return data;
+  }
+}
+
+class TopSellingBreads {
+  String? name;
+  var units;
+
+  TopSellingBreads({this.name, this.units});
+
+  TopSellingBreads.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    units = json['units'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['units'] = this.units;
     return data;
   }
 }

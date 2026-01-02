@@ -27,7 +27,7 @@ class _BreadcatalogState extends State<Breadcatalog> {
   @override
   void initState() {
     Future.microtask(() {
-      productsController.getProductsWholesalerListApi(context: context);
+      productsController.getProductsWholesalerListApi(context: context,sort: "",search: "");
     },);
     super.initState();
   }
@@ -73,63 +73,83 @@ class _BreadcatalogState extends State<Breadcatalog> {
           children: [
 
             // Search Bar
-            SearchTextField(searchController, Color(0xFFE5E7EB), darkGreyColor, "Search Breads...", true, Colors.transparent, false),
+            TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: brownColor),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: brownColor),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                filled: true,
+                prefixIcon: Icon(Icons.search, color: brownColor),
+                fillColor: softIvoryColor,
+                hintText: "search_products..".tr,
+              ),
+              onChanged: (v){
+                productsController.getProductsWholesalerListApi(context: context,search: searchController.text,sort: "");
+              },
+            ),
 
             SizedBox(height: 20),
 
             // Filter Row
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
+            // SingleChildScrollView(
+            //   scrollDirection: Axis.horizontal,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //
+            //       buildFilter("A-Z", 0),
+            //       SizedBox(width: 10),
+            //
+            //       buildFilter("Low to High", 1),
+            //       SizedBox(width: 10),
+            //
+            //       buildFilter("High to Low", 2),
+            //       SizedBox(width: 10),
+            //
+            //       // Toggle Switch
+            //       // Container(
+            //       //   padding: EdgeInsets.symmetric(horizontal: 12),
+            //       //   decoration: BoxDecoration(
+            //       //     color: Color(0xFFE5E7EB),
+            //       //     borderRadius: BorderRadius.circular(21),
+            //       //   ),
+            //       //   child: Row(
+            //       //     children: [
+            //       //       text("in_stock".tr,
+            //       //           fontSize: 14,
+            //       //           fontWeight: FontWeight.w500,
+            //       //           textColor: blackColor),
+            //       //
+            //       //       SizedBox(width: 5),
+            //       //
+            //       //       Transform.scale(
+            //       //         scale: 0.7,
+            //       //         child: Switch(
+            //       //           value: isSelected,
+            //       //           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            //       //           activeColor: darkBrownColor,
+            //       //           activeTrackColor: darkBrownColor.withOpacity(0.4),
+            //       //           onChanged: (value) {
+            //       //             setState(() {
+            //       //               isSelected = value;
+            //       //             });
+            //       //           },
+            //       //         ),
+            //       //       ),
+            //       //     ],
+            //       //   ),
+            //       // ),
+            //     ],
+            //   ),
+            // ),
 
-                  buildFilter("A-Z", 0),
-                  SizedBox(width: 10),
-
-                  buildFilter("Low to High", 1),
-                  SizedBox(width: 10),
-
-                  buildFilter("High to Low", 2),
-                  SizedBox(width: 10),
-
-                  // Toggle Switch
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFE5E7EB),
-                      borderRadius: BorderRadius.circular(21),
-                    ),
-                    child: Row(
-                      children: [
-                        text("in_stock".tr,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            textColor: blackColor),
-
-                        SizedBox(width: 5),
-
-                        Transform.scale(
-                          scale: 0.7,
-                          child: Switch(
-                            value: isSelected,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            activeColor: darkBrownColor,
-                            activeTrackColor: darkBrownColor.withOpacity(0.4),
-                            onChanged: (value) {
-                              setState(() {
-                                isSelected = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 20),
+           // SizedBox(height: 20),
 
             Obx(() {
                 return Expanded(
@@ -188,6 +208,9 @@ class _BreadcatalogState extends State<Breadcatalog> {
         setState(() {
           selectedIndex = index;
         });
+        productsController.getProductsWholesalerListApi(context: context,search: "",
+            sort:selectedIndex==0?"":selectedIndex==1?"":"");
+
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),

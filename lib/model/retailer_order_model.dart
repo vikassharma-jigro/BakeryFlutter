@@ -29,6 +29,7 @@ class RetailerOrderModel {
 
 class RetailerOrderData {
   String? orderId;
+  String? Id;
   String? createdAt;
   String? productName;
   int? quantity;
@@ -38,6 +39,7 @@ class RetailerOrderData {
   RetailerOrderData(
       {this.orderId,
         this.createdAt,
+        this.Id,
         this.productName,
         this.quantity,
         this.totalAmount,
@@ -45,6 +47,7 @@ class RetailerOrderData {
 
   RetailerOrderData.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
+    Id = json['Id'];
     createdAt = json['createdAt'];
     productName = json['productName'];
     quantity = json['quantity'];
@@ -55,6 +58,7 @@ class RetailerOrderData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['orderId'] = this.orderId;
+    data['Id'] = this.Id;
     data['createdAt'] = this.createdAt;
     data['productName'] = this.productName;
     data['quantity'] = this.quantity;

@@ -1,4 +1,5 @@
 import 'package:bakerybrown/app_utils/app_images.dart';
+import 'package:bakerybrown/getx_controller/accounts_controller.dart';
 import 'package:bakerybrown/wholeSaler/accountsScreen/assetsScreen.dart';
 import 'package:bakerybrown/wholeSaler/accountsScreen/liabilitiesScreen.dart';
 import 'package:bakerybrown/wholeSaler/accountsScreen/retailersLedgerScreen.dart';
@@ -20,7 +21,15 @@ class Accountdashscreen extends StatefulWidget {
 
 class _AccountdashscreenState extends State<Accountdashscreen> {
   int selectedIndex = 0;
+  final AccountsController accountsController = Get.put(AccountsController());
 
+  @override
+  void initState() {
+    Future.microtask(() {
+      accountsController.getWholesalerAccountsApi(context: context,assetSort: "",liabilityPaymentStatus: "");
+    },);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,157 +57,166 @@ class _AccountdashscreenState extends State<Accountdashscreen> {
           SizedBox(width: 10),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Obx(() {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(
-                    onTap: (){
-                      Get.to(Retailersledgerscreen());
-                    },
-                    child: WholeSalerDashboard.AccountsDashBoard(
-                      Icons.arrow_downward,
-                      "€2,45,000",
-                      "Amount to receive",
-                      greenColor,
-                      context,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          Get.to(Retailersledgerscreen());
+                        },
+                        child: WholeSalerDashboard.AccountsDashBoard(
+                          Icons.arrow_downward,
+                          "€${accountsController.wholesalerAccountsData.value.amountFlow?.receivedFromRetailers??""}",
+                          "Amount to receive",
+                          greenColor,
+                          context,
+                        ),
+                      ),
+                      WholeSalerDashboard.AccountsDashBoard(
+                        Icons.arrow_upward,
+                        "€${accountsController.wholesalerAccountsData.value.amountFlow?.toPayManagers??""}",
+                        "Amount to pay supplier",
+                        Colors.red,
+                        context,
+                      ),
+                    ],
                   ),
-                  WholeSalerDashboard.AccountsDashBoard(
-                    Icons.arrow_upward,
-                    "€1,89,500",
-                    "Amount to pay supplier",
-                    Colors.red,
-                    context,
+                  SizedBox(height: 6),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      WholeSalerDashboard.AccountsDashBoard(
+                        Icons.check,
+                        "€0.00",
+                        "Completed collections",
+                        greenColor,
+                        context,
+                      ),
+                      WholeSalerDashboard.AccountsDashBoard(
+                        Icons.check_circle,
+                        "€${accountsController.wholesalerAccountsData.value.amountFlow?.paidToManagers??""}",
+                        "Factory payments done",
+                        Colors.blue,
+                        context,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 6),
-        
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  WholeSalerDashboard.AccountsDashBoard(
-                    Icons.check,
-                    "€8,75,000",
-                    "Completed collections",
-                    greenColor,
-                    context,
-                  ),
-                  WholeSalerDashboard.AccountsDashBoard(
-                    Icons.check_circle,
-                    "€6,42,300",
-                    "Factory payments done",
-                    Colors.blue,
-                    context,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-        
-              Container(
-                width: MediaQuery.sizeOf(context).width,
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(11),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(child: buildFilter("transactions".tr, 0)),
-                     Expanded(child: buildFilter("assets".tr, 1)),
-                    Expanded(child: buildFilter("liabilities".tr, 2)),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-        
-              text(
-                "recent_transactions".tr,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                fontFamily: FontFamily.interBold,
-                textColor: blackColor,
-              ),
-              SizedBox(height: 16),
-        
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 10,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (_, index) {
-                  return Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(17),
-                    margin: EdgeInsets.only(bottom: 10),
+                  SizedBox(height: 16),
+
+                  Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    padding: EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: white,
                       borderRadius: BorderRadius.circular(11),
                     ),
-                    child: Column(
+                    child: Row(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            text(
-                              "Sweet Treats Retail",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: FontFamily.interBold,
-                              textColor: blackColor,
-                            ),
-                            text(
-                              "€12,500",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: FontFamily.interBold,
-                              textColor: blackColor,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            text(
-                              "UPI • Today, 2:30 PM",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: FontFamily.interRegular,
-                              textColor: darkGreyColor.withOpacity(0.5),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: greenColor.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(21),
-                              ),
-                              child: text(
-                                "Paid",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: FontFamily.interRegular,
-                                textColor: greenColor,
-                              ),
-                            ),
-                          ],
-                        ),
+                        Expanded(child: buildFilter("transactions".tr, 0)),
+                         Expanded(child: buildFilter("assets".tr, 1)),
+                        Expanded(child: buildFilter("liabilities".tr, 2)),
                       ],
                     ),
-                  );
-                },
+                  ),
+                  SizedBox(height: 16),
+
+                  text(
+                    "recent_transactions".tr,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: FontFamily.interBold,
+                    textColor: blackColor,
+                  ),
+                  SizedBox(height: 16),
+
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: accountsController.wholesalerAccountsData.value.recentTransactions?.length??0,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, index) {
+                      var recentTransaction = accountsController.wholesalerAccountsData.value.recentTransactions?[index];
+                      String iso = recentTransaction?.createdAt??"";
+
+                      String date = iso.split("T")[0];      // 2025-12-23
+                      String time = iso.split("T")[1]
+                          .split(".")[0];
+                      return Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.all(17),
+                        margin: EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                          color: white,
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text(
+                                  recentTransaction?.orderTo?.name??"",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: FontFamily.interBold,
+                                  textColor: blackColor,
+                                ),
+                                text(
+                                  "€${recentTransaction?.totalAmount??""}",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: FontFamily.interBold,
+                                  textColor: blackColor,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text(
+                                  "${recentTransaction?.paymentMode??""} • ${date}",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: FontFamily.interRegular,
+                                  textColor: darkGreyColor.withOpacity(0.5),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: greenColor.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(21),
+                                  ),
+                                  child: text(
+                                    "Paid",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: FontFamily.interRegular,
+                                    textColor: greenColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        }
       ),
     );
   }

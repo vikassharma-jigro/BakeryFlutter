@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../app_utils/app_colors.dart';
 import '../../app_utils/font_family.dart';
 import '../../app_utils/text_widget.dart';
+import '../../getx_controller/accounts_controller.dart';
 
 class Retailersledgerscreen extends StatefulWidget {
   const Retailersledgerscreen({super.key});
@@ -17,6 +18,7 @@ class Retailersledgerscreen extends StatefulWidget {
 
 class _RetailersledgerscreenState extends State<Retailersledgerscreen> {
   int selectedIndex = 0;
+  final AccountsController accountsController = Get.put(AccountsController());
 
   List<Map<String, dynamic>> transactionType = [
     // All List
@@ -222,6 +224,7 @@ class _RetailersledgerscreenState extends State<Retailersledgerscreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: softIvoryColor,
       appBar: AppBar(
@@ -248,210 +251,215 @@ class _RetailersledgerscreenState extends State<Retailersledgerscreen> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(17),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Cards
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Obx(
+         () {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(17),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  WholeSalerDashboard.AccountsLedgerCard(
-                    context,
-                    "pending_amount1".tr,
-                    "€12,450",
-                    Icons.watch_later,
-                    Colors.red,
+                  // Cards
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      WholeSalerDashboard.AccountsLedgerCard(
+                        context,
+                        "pending_amount1".tr,
+                        "€${accountsController.wholesalerAccountsData.value.retailerSummary?.pendingAmount??""}",
+                        Icons.watch_later,
+                        redColor,
+                      ),
+                      WholeSalerDashboard.AccountsLedgerCard(
+                        context,
+                        "paid_amount".tr,
+                        "€${accountsController.wholesalerAccountsData.value.retailerSummary?.paidAmount??""}",
+                        Icons.check_circle,
+                        greenColor,
+                      ),
+                    ],
                   ),
-                  WholeSalerDashboard.AccountsLedgerCard(
-                    context,
-                    "paid_amount".tr,
-                    "€45,200",
-                    Icons.check_circle,
-                    greenColor,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-        
-              Container(
-                width: MediaQuery.sizeOf(context).width,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(11),
-                  color: white,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                  SizedBox(height: 16),
+
+                  Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: white,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              text(
-                                "total_outstanding".tr,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                textColor: dark1BrownColor,
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  text(
+                                    "total_outstanding".tr,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    textColor: dark1BrownColor,
+                                  ),
+                                  text(
+                                    "€${accountsController.wholesalerAccountsData.value.retailerSummary?.totalAmount??""}",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24,
+                                    textColor: dark1BrownColor,
+                                  ),
+                                ],
                               ),
-                              text(
-                                "€57,650",
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24,
-                                textColor: dark1BrownColor,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            child: Icon(
-                              Icons.stacked_line_chart,
-                              color: dark1BrownColor,
                             ),
-                          ),
+                            Expanded(
+                              flex: 1,
+                              child: Icon(
+                                Icons.stacked_line_chart,
+                                color: dark1BrownColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(),
+                        text(
+                          'Last Payment: ${accountsController.wholesalerAccountsData.value.retailerSummary?.lastPaymentDate==null?"":accountsController.wholesalerAccountsData.value.retailerSummary?.lastPaymentDate.split("T")[0]??""}',
+                          textColor: dark1BrownColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
                       ],
                     ),
-                    Divider(),
-                    text(
-                      'Last Payment: Dec 15, 2024',
-                      textColor: dark1BrownColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-        
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  buildFilter("all".tr, 0),
-                  SizedBox(width: 10),
-                  buildFilter("cash".tr, 1),
-                  SizedBox(width: 10),
-                  buildFilter("online".tr, 2),
-                  SizedBox(width: 10),
-                  buildFilter("cheque".tr, 3),
-                ],
-              ),
-              SizedBox(height: 16),
-        
-              text(
-                "transaction_history".tr,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                fontFamily: FontFamily.interBold,
-                textColor: dark1BrownColor,
-              ),
-              SizedBox(height: 16),
-        
-              ListView.builder(
-                itemCount: filterPayment.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (_, index){
+                  ),
+                  SizedBox(height: 16),
 
-                    final data = filterPayment[index];
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      buildFilter("all".tr, 0),
+                      SizedBox(width: 10),
+                      buildFilter("cash".tr, 1),
+                      SizedBox(width: 10),
+                      buildFilter("online".tr, 2),
+                      SizedBox(width: 10),
+                      buildFilter("cheque".tr, 3),
+                    ],
+                  ),
+                  SizedBox(height: 16),
 
-                    return Container(
-                      padding: EdgeInsets.all(16),
-                      margin: EdgeInsets.only(bottom: 12),
-                      decoration: BoxDecoration(
-                        color: white,
-                        borderRadius: BorderRadius.circular(11),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                  text(
+                    "transaction_history".tr,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: FontFamily.interBold,
+                    textColor: dark1BrownColor,
+                  ),
+                  SizedBox(height: 16),
+
+                  ListView.builder(
+                    itemCount: accountsController.wholesalerAccountsData.value.retailerOrders?.length??0,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (_, index){
+                      var retailerOrders = accountsController.wholesalerAccountsData.value.retailerOrders?[index];
+                      String iso = retailerOrders?.createdAt??"";
+
+                      String date = iso.split("T")[0];      // 2025-12-23
+                      String time = iso.split("T")[1]
+                          .split(".")[0];
+                        return Container(
+                          padding: EdgeInsets.all(16),
+                          margin: EdgeInsets.only(bottom: 12),
+                          decoration: BoxDecoration(
+                            color: white,
+                            borderRadius: BorderRadius.circular(11),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: greenColor.withOpacity(0.2),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Image.asset(
-                                      AppImages.paymentIcon,
-                                      width: 30,
-                                      height: 30,
-                                      color: data['color'],
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: greenColor.withOpacity(0.2),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Image.asset(
+                                          AppImages.paymentIcon,
+                                          width: 30,
+                                          height: 30,
+                                          color: greenColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  SizedBox(width: 10),
+
+                                  Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        text(
+                                          "€${retailerOrders?.totalAmount??""}",
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          textColor: greenColor,
+                                        ),
+                                        text(
+                                          retailerOrders?.paymentMode??"",
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          textColor: blackColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Expanded(
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        text(
+                                          date,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          textColor: blackColor,
+                                        ),
+                                        text(
+                                          time,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          textColor: blackColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(width: 10),
-        
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    text(
-                                      "${data['payment']}",
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      textColor: data['payment_status_color'],
-                                    ),
-                                    text(
-                                      "${data['payment_type']}",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      textColor: blackColor,
-                                    ),
-                                  ],
-                                ),
-                              ),
-        
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    text(
-                                      "${data['date']}",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      textColor: blackColor,
-                                    ),
-                                    text(
-                                      "${data['time']}",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      textColor: blackColor,
-                                    ),
-                                  ],
-                                ),
+                              SizedBox(height: 5),
+                              text(
+                                "Payment for Order ${retailerOrders?.id}",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: FontFamily.interRegular,
+                                textColor: darkGreyColor,
                               ),
                             ],
                           ),
-                          SizedBox(height: 5),
-                          text(
-                            "${data['payment_id']}",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: FontFamily.interRegular,
-                            textColor: darkGreyColor,
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-            ],
-          ),
-        ),
+                        );
+                      }),
+                ],
+              ),
+            ),
+          );
+        }
       ),
     );
   }
@@ -464,6 +472,11 @@ class _RetailersledgerscreenState extends State<Retailersledgerscreen> {
         setState(() {
           selectedIndex = index;
         });
+        accountsController.getWholesalerAccountsApi(context: context,
+        liabilityPaymentStatus: "",
+          assetSort: "",
+          orderPaymentType: selectedIndex==0?"":selectedIndex==1?"cash":selectedIndex==2?"UPI":"cheque"
+        );
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
