@@ -154,11 +154,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             children: [
                               ClipRRect(
                                   borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
-                                  child: CachedNetworkImage(
-                                    imageUrl: "$IP${productData?.img??""}",
-                                    fit: BoxFit.cover,height: 120,width: 157,
-                                    placeholder: (context, url) => CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
+                                  child: AspectRatio(
+                                    aspectRatio: 16 / 9,
+                                    child: CachedNetworkImage(
+                                      imageUrl: "$IP${productData?.img??""}",
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
+                                    ),
                                   )),
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 6,vertical: 4),

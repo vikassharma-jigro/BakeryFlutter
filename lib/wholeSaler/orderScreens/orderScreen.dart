@@ -24,7 +24,7 @@ class _OrderscreenState extends State<Orderscreen> {
 
   @override
   void initState() {
-    productsController.getWholesalerOrderApi(context: context);
+    productsController.getWholesalerOrderApi(context: context,status: "");
     super.initState();
   }
 
@@ -178,9 +178,9 @@ class _OrderscreenState extends State<Orderscreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             buildFilter('all'.tr, 0),
-                            buildFilter('placed'.tr, 1),
+                            buildFilter('Dispatched'.tr, 1),
                             buildFilter('packed'.tr, 2),
-                            buildFilter('shipped'.tr, 3),
+                            buildFilter('Delivered'.tr, 3),
                           ],
                         ),
                       ],
@@ -188,7 +188,16 @@ class _OrderscreenState extends State<Orderscreen> {
                   ),
                   SizedBox(height: 29),
 
-                  ListView.builder(
+                  productsController.wholesalerOrderData.value.count==0?
+                      Column(
+                        children: [
+                          Center(child: Image.asset(AppImages.dataNotFoundIcon,height: 100,)),
+                          SizedBox(height: 20,),
+                          text("Data Not Found", fontSize: 16, fontWeight: FontWeight.w600, fontFamily: FontFamily.interBold, textColor: dark1BrownColor),
+
+                        ],
+                      )
+                      :ListView.builder(
                     shrinkWrap: true,
                     itemCount: productsController.wholesalerOrderData.value.data?.length??0,
                     physics: NeverScrollableScrollPhysics(),
@@ -223,6 +232,8 @@ class _OrderscreenState extends State<Orderscreen> {
         setState(() {
           selectedIndex = index;
         });
+        productsController.getWholesalerOrderApi(context: context,
+            status:selectedIndex==0?"":selectedIndex==1?"dispatched":selectedIndex==2?"packed":"delivered");
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),

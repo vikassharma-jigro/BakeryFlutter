@@ -126,10 +126,10 @@ class _MyProductScreenState extends State<MyProductScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ClipRRect(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
+                                borderRadius: BorderRadius.circular(15),
                                 child: CachedNetworkImage(
                                   imageUrl: "$IP${productData?.img??""}",
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,height: 80,
                                   placeholder: (context, url) => CircularProgressIndicator(),
                                   errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread,height: 60,),
                                 )),

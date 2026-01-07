@@ -157,6 +157,7 @@ class AuthController extends GetxController {
   var limit = 10;
   var isLoadingPage = false.obs;
   var hasMore = true.obs;
+  var isFirstPageLoaded = false.obs;
 
   Future<RetailerListModel> getRetailerListApi({
     required BuildContext context,
@@ -166,13 +167,20 @@ class AuthController extends GetxController {
     bool isSearch = false,
   }) async {
 
-    /// 🔍 SEARCH START
-    if (isSearch) {
+    /// 🔄 STATUS / SEARCH RESET
+    if (!isLoadMore || isSearch) {
       page.value = 1;
       hasMore.value = true;
+      isFirstPageLoaded.value = false;
+      retailerListModel.value.data?.clear();
     }
 
-    if (isLoadingPage.value || (!hasMore.value && isLoadMore)) {
+    /// 🚫 Page-1 poora load hone se pehle pagination block
+    if (isLoadMore && !isFirstPageLoaded.value) {
+      return retailerListModel.value;
+    }
+
+    if (isLoadingPage.value || !hasMore.value) {
       return retailerListModel.value;
     }
 
@@ -188,37 +196,28 @@ class AuthController extends GetxController {
     var response = await ApiBaseHelper().getApiCall(context, url);
     RetailerListModel modal = RetailerListModel.fromJson(response);
 
-    /// 🔹 LOAD MORE
-    if (isLoadMore) {
+    if (modal.data != null && modal.data!.isNotEmpty) {
 
-      if (modal.data != null && modal.data!.isNotEmpty) {
-        retailerListModel.value.data!.addAll(modal.data!);
-        page.value++;
-      } else {
-        hasMore.value = false;
+      retailerListModel.value.data ??= [];
+      retailerListModel.value.data!.addAll(modal.data!);
+
+      page.value++;
+      hasMore.value = modal.data!.length == limit;
+
+      /// ✅ Page-1 fully handled
+      if (page.value > 1) {
+        isFirstPageLoaded.value = true;
       }
 
-    }
-
-    /// 🔹 FIRST PAGE (normal / search)
-    else {
-
-      if (modal.data != null && modal.data!.isNotEmpty) {
-        retailerListModel.value = modal;
-        page.value = 2;
-        hasMore.value = modal.data!.length == limit;
-      } else {
-        /// ❗ SEARCH + NO DATA
-        if (isSearch) {
-          retailerListModel.value.data?.clear(); // ❌ old data remove
-        }
-        hasMore.value = false;
-      }
+    } else {
+      hasMore.value = false;
+      isFirstPageLoaded.value = true;
     }
 
     isLoadingPage.value = false;
     return retailerListModel.value;
   }
+
 
 
   var profileData = ProfileData().obs;

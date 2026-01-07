@@ -136,8 +136,9 @@ class ProductsController extends GetxController {
   }
 
   var wholesalerOrderData = RetailerOrderModel().obs;
-  Future<RetailerOrderModel>getWholesalerOrderApi({BuildContext? context}) async {
-    var response = await ApiBaseHelper().getApiCall(context!,wholesalerOrderListUrl);
+  Future<RetailerOrderModel>getWholesalerOrderApi({BuildContext? context,var status}) async {
+    final url = "$wholesalerOrderListUrl?status=$status";
+    var response = await ApiBaseHelper().getApiCall(context!,url);
     RetailerOrderModel modal = RetailerOrderModel.fromJson(response);
     wholesalerOrderData.value = modal;
     return modal;

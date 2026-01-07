@@ -1,4 +1,5 @@
 import 'package:bakerybrown/app_utils/app_colors.dart';
+import 'package:bakerybrown/app_utils/app_images.dart';
 import 'package:bakerybrown/app_utils/font_family.dart';
 import 'package:bakerybrown/app_utils/text_widget.dart';
 import 'package:bakerybrown/wholeSaler/retailersScreens/addRetailerScreen.dart';
@@ -46,17 +47,20 @@ class _RetailersScreenState extends State<RetailersScreen> {
     /// First API Call
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent &&
-          authController.hasMore.value &&
-          !authController.isLoadingPage.value) {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
 
-        authController.getRetailerListApi(
-          context: context,
-          status: getStatus(),
-          search: _searchController.text,
-          //isLoadMore: true,
-        );
+        if (!authController.isLoadingPage.value &&
+            authController.hasMore.value &&
+            authController.isFirstPageLoaded.value) {
+
+          authController.getRetailerListApi(
+            context: context,
+            status: getStatus(),
+            search: _searchController.text,
+            isLoadMore: true,
+          );
+        }
       }
     });
     /// Pagination Listener
@@ -192,14 +196,22 @@ class _RetailersScreenState extends State<RetailersScreen> {
               child: Obx(() {
                 final list =
                     authController.retailerListModel.value.data ?? [];
-
                 if (list.isEmpty && !authController.isLoading.value) {
                   return Center(
-                    child: text(
-                      "Data Not Found",
-                      textColor: blueColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(AppImages.dataNotFoundIcon,height: 100,),
+                        SizedBox(height: 20,),
+                        text(
+                          "Data Not Found",
+                          textColor: brownColor,
+                          fontSize: 18,
+                          fontFamily: FontFamily.interBold,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
                     ),
                   );
                 }

@@ -44,11 +44,15 @@ class WholeSalerBreadCatalog {
               topRight: Radius.circular(21),
               topLeft: Radius.circular(21),
             ),
-            child: CachedNetworkImage(
-              imageUrl: imgPath,
-              fit: BoxFit.cover,height: 120,width: 157,
-              placeholder: (context, url) => Image.asset(AppImages.multigrainbread),
-              errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: CachedNetworkImage(
+                imageUrl: imgPath,
+                fit: BoxFit.
+                cover,
+                placeholder: (context, url) => Image.asset(AppImages.multigrainbread),
+                errorWidget: (context, url, error) => Image.asset(AppImages.multigrainbread),
+              ),
             ),
           ),
           // Container(

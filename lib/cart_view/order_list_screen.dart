@@ -40,7 +40,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
         return Scaffold(
           backgroundColor: softIvoryColor,
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(170), // 👈 Yaha height set karo
+              preferredSize: Size.fromHeight(120), // 👈 Yaha height set karo
               child: Container(
                 color: white,
                 child: Padding(
@@ -64,7 +64,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(height: 20,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -106,7 +106,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                             ),
                           ],
                         ),
-                        Container(
+                       /* Container(
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -133,7 +133,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
                               ),
                             ],
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),

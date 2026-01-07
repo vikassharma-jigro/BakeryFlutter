@@ -175,7 +175,22 @@ class _RetailersorderscreenState extends State<Retailersorderscreen> {
                     ),
                   ),*/
 
-                    ListView.builder(
+                  productsController.retailerToWholesalerOrderData.value.count==0?
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 240,),
+                        Image.asset(AppImages.dataNotFoundIcon,height: 100,),
+                        SizedBox(height: 20,),
+                        text("Data Not Found", fontSize: 16, fontWeight: FontWeight.w600, fontFamily: FontFamily.interBold, textColor: dark1BrownColor),
+
+                      ],
+                    ),
+                  ):
+                  ListView.builder(
                       itemCount: productsController.retailerToWholesalerOrderData.value.data?.length??0,
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
