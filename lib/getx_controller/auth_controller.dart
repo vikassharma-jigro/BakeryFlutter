@@ -158,6 +158,7 @@ class AuthController extends GetxController {
   var isLoadingPage = false.obs;
   var hasMore = true.obs;
   var isFirstPageLoaded = false.obs;
+ // var isLoading = false.obs;
 
   Future<RetailerListModel> getRetailerListApi({
     required BuildContext context,
@@ -167,7 +168,7 @@ class AuthController extends GetxController {
     bool isSearch = false,
   }) async {
 
-    /// 🔄 STATUS / SEARCH RESET
+    /// RESET
     if (!isLoadMore || isSearch) {
       page.value = 1;
       hasMore.value = true;
@@ -175,7 +176,6 @@ class AuthController extends GetxController {
       retailerListModel.value.data?.clear();
     }
 
-    /// 🚫 Page-1 poora load hone se pehle pagination block
     if (isLoadMore && !isFirstPageLoaded.value) {
       return retailerListModel.value;
     }
@@ -185,6 +185,7 @@ class AuthController extends GetxController {
     }
 
     isLoadingPage.value = true;
+    isLoading.value = true;
 
     String url =
         "$retailerAddListUrl"
@@ -197,26 +198,22 @@ class AuthController extends GetxController {
     RetailerListModel modal = RetailerListModel.fromJson(response);
 
     if (modal.data != null && modal.data!.isNotEmpty) {
-
       retailerListModel.value.data ??= [];
       retailerListModel.value.data!.addAll(modal.data!);
 
       page.value++;
       hasMore.value = modal.data!.length == limit;
-
-      /// ✅ Page-1 fully handled
-      if (page.value > 1) {
-        isFirstPageLoaded.value = true;
-      }
-
+      isFirstPageLoaded.value = true;
     } else {
       hasMore.value = false;
       isFirstPageLoaded.value = true;
     }
 
     isLoadingPage.value = false;
+    isLoading.value = false;
     return retailerListModel.value;
   }
+
 
 
 

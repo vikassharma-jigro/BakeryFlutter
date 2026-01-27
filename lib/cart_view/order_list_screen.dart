@@ -7,9 +7,6 @@ import '../app_utils/font_family.dart';
 import '../app_utils/text_widget.dart';
 import '../getx_controller/product_controller.dart';
 
-
-
-
 class OrderListScreen extends StatefulWidget {
   const OrderListScreen({super.key});
 
@@ -159,9 +156,6 @@ class _OrderListScreenState extends State<OrderListScreen> {
                       String date = iso.split("T")[0];      // 2025-12-23
                       String time = iso.split("T")[1]
                           .split(".")[0];                   // 11:04:55
-
-                      print(date);
-                      print(time);
                       return Container(
                         margin: EdgeInsets.all(5),
                         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
@@ -182,7 +176,6 @@ class _OrderListScreenState extends State<OrderListScreen> {
                                     fontFamily: FontFamily.interBold
                                 ),
                                 Container(
-
                                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),

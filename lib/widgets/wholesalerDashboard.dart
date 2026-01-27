@@ -121,9 +121,9 @@ class WholeSalerDashboard{
       onTap: onTap,
       child: Container(
 
-         width: MediaQuery.sizeOf(context).width * 0.2,
-         height: MediaQuery.sizeOf(context).width * 0.33,
-        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+         // width: MediaQuery.sizeOf(context).width * 0.2,
+         // height: MediaQuery.sizeOf(context).width * 0.33,
+        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
         decoration: BoxDecoration(
           color: lightBoxColor,
           borderRadius: BorderRadius.circular(21),
@@ -140,7 +140,7 @@ class WholeSalerDashboard{
                   color: white,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Center(child: SvgPicture.asset(imgPath)),
+                child: Center(child: SvgPicture.asset(imgPath),widthFactor: 3,),
               ),
             ),
             SizedBox(height: 10,),
@@ -185,7 +185,7 @@ class WholeSalerDashboard{
               ),
               Align(
                 alignment: Alignment.center,
-                child: Container(
+                child: SizedBox(
                     width: double.infinity,
                     child: text("${title}", textColor: dark1BrownColor, fontFamily: FontFamily.interRegular, fontWeight: FontWeight.w500, fontSize: 14, textAlign: TextAlign.center)),
               )

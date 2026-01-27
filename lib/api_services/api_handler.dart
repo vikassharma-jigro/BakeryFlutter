@@ -1,5 +1,6 @@
 import 'package:bakerybrown/api_services/response_handling_services.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../app_utils/shared_preferences.dart';
 import '../main.dart';
@@ -52,8 +53,7 @@ class ApiHandler {
             apiResponse.messsage ?? "",);
       }
     } catch (e) {
-      print("adsApi Error: ${e.toString()}"); // Log error details
-
+      debugPrint("adsApi Error: ${e.toString()}"); // Log error details
       return OnComplete.error("Something went wrong!");
     }
   }

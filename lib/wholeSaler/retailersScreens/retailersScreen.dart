@@ -33,22 +33,23 @@ class _RetailersScreenState extends State<RetailersScreen> {
 
   @override
   void initState() {
+    super.initState();
+
+    /// FIRST API CALL
     Future.microtask(() {
       authController.page.value = 1;
-      //authController.hasMore.value = true;
+      authController.hasMore.value = true;
       authController.getRetailerListApi(
         context: context,
         status: "",
         search: "",
       );
     });
-    super.initState();
 
-    /// First API Call
-
+    /// PAGINATION LISTENER (ONLY ONE)
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
+          _scrollController.position.maxScrollExtent - 100) {
 
         if (!authController.isLoadingPage.value &&
             authController.hasMore.value &&
@@ -61,17 +62,6 @@ class _RetailersScreenState extends State<RetailersScreen> {
             isLoadMore: true,
           );
         }
-      }
-    });
-    /// Pagination Listener
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        authController.getRetailerListApi(
-        context: context,
-          status: getStatus(),
-          search: _searchController.text,
-        );
       }
     });
   }
@@ -88,92 +78,77 @@ class _RetailersScreenState extends State<RetailersScreen> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: white,
-        title: Row(
-          children: [
-            // InkWell(
-            //   onTap: () => Navigator.pop(context),
-            //   child: Icon(Icons.arrow_back_ios, color: brownColor),
-            // ),
-            Expanded(
-              child: text(
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Row(
+            children: [
+              InkWell(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.arrow_back_ios,color: blackColor,)),
+              text(
                 "retailers".tr,
-                isCentered: true,
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
                 fontFamily: FontFamily.interBold,
                 textColor: dark1BrownColor,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           InkWell(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => Addretailerscreen()),
+                MaterialPageRoute(builder: (_) => Addretailerscreen()),
               );
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 11),
-              margin: const EdgeInsets.only(right: 21),
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                 color: dark1BrownColor,
                 borderRadius: BorderRadius.circular(11),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.add, color: white, size: 19),
-                  const SizedBox(width: 5),
+                  const Icon(Icons.add, color: white, size: 18),
+                  const SizedBox(width: 6),
                   text(
                     "add_retailers".tr,
-                    fontFamily: FontFamily.interRegular,
-                    fontWeight: FontWeight.w500,
                     textColor: white,
-                    fontSize: 16,
+                    fontSize: 15,
                   ),
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
 
       /// BODY
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
 
             /// SEARCH
             CustomRoundTextField(
+              fillColor: white,
+              borderRadius: 10,
               controller: _searchController,
               hintText: "search_retailers".tr,
-              borderColor: brownColor,
-              fillColor: lightWhiteColor,
               onChanged: (v) {
-                //authController.page.value = 1;
-                //authController.hasMore.value = true;
                 authController.getRetailerListApi(
                   context: context,
                   status: getStatus(),
-                  isSearch: true,
                   search: v,
+                  isSearch: true,
                 );
               },
-              // onTap: (){
-              //   authController.page.value = 1;
-              //   //authController.hasMore.value = true;
-              //   authController.getRetailerListApi(
-              //     context: context,
-              //     status: getStatus(),
-              //
-              //     search: _searchController.text,
-              //   );
-              // },
             ),
 
             const SizedBox(height: 20),
@@ -196,20 +171,22 @@ class _RetailersScreenState extends State<RetailersScreen> {
               child: Obx(() {
                 final list =
                     authController.retailerListModel.value.data ?? [];
-                if (list.isEmpty && !authController.isLoading.value) {
+
+                /// FIRST PAGE EMPTY
+                if (list.isEmpty &&
+                    !authController.isLoading.value &&
+                    authController.page.value == 1) {
                   return Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(AppImages.dataNotFoundIcon,height: 100,),
-                        SizedBox(height: 20,),
+                        Image.asset(AppImages.dataNotFoundIcon, height: 100),
+                        const SizedBox(height: 20),
                         text(
                           "Data Not Found",
-                          textColor: brownColor,
                           fontSize: 18,
+                          textColor: brownColor,
                           fontFamily: FontFamily.interBold,
-                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
@@ -218,45 +195,66 @@ class _RetailersScreenState extends State<RetailersScreen> {
 
                 return ListView.builder(
                   controller: _scrollController,
-                  itemCount: list.length + (authController.hasMore.value ? 1 : 0),
+                  itemCount:
+                  list.length + (authController.hasMore.value ? 1 : 0),
                   itemBuilder: (context, index) {
 
-                    // 🔹 Loader item
+                    /// FOOTER
                     if (index == list.length) {
-                      return const Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
+
+                      if (authController.isLoadingPage.value) {
+                        return const Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+
+                      if (!authController.hasMore.value &&
+                          authController.page.value > 1) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child: text(
+                              "Page not available",
+                              fontSize: 14,
+                              textColor: brownColor,
+                            ),
+                          ),
+                        );
+                      }
+
+                      return const SizedBox.shrink();
                     }
 
                     final data = list[index];
                     final employeeList = data.employeeDetails ?? [];
-                    final addressList = data.addresses??[];
+                    final addressList = data.addresses ?? [];
 
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: employeeList.length,
-                      itemBuilder: (context, itemIndex) {
+                      itemBuilder: (context, empIndex) {
                         return ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: addressList.length,
-                          itemBuilder: (context, index) {
-                          return RetailersDashBoard.retailersDetailsCard(
-                            employeeList[itemIndex].shopName ?? "",
-                                () {},
-                            data.name ?? "",
-                            data.phone?.toString() ?? "",
-                            addressList[index].addressLine??"",
-                            data.status ?? "",
-                          );
-                        },);
+                          itemBuilder: (context, addIndex) {
+                            return RetailersDashBoard
+                                .retailersDetailsCard(
+                              employeeList[empIndex].shopName ?? "",
+                                  () {},
+                              data.name ?? "",
+                              data.phone.toString() ?? "",
+                              addressList[addIndex].addressLine ?? "",
+                              data.status ?? "",
+                            );
+                          },
+                        );
                       },
                     );
                   },
                 );
-
               }),
             ),
           ],
@@ -271,9 +269,7 @@ class _RetailersScreenState extends State<RetailersScreen> {
 
     return InkWell(
       onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
+        setState(() => selectedIndex = index);
 
         authController.page.value = 1;
         authController.hasMore.value = true;
@@ -294,7 +290,6 @@ class _RetailersScreenState extends State<RetailersScreen> {
         child: text(
           label,
           fontSize: 16,
-          fontWeight: FontWeight.w500,
           textColor: isSelected ? white : blackColor,
         ),
       ),

@@ -10,7 +10,11 @@ import '../../app_utils/text_widget.dart';
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
 
-  var nameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController gstController = TextEditingController();
+  TextEditingController shopAddressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +93,7 @@ class EditProfileScreen extends StatelessWidget {
                     text("phone_number".tr, fontWeight: FontWeight.w400, fontSize: 12, textColor: dark1BrownColor),
                     SizedBox(height: 10,),
                     CustomRoundTextField(
-                      controller: nameController,
+                      controller: phoneController,
                       fillColor: white,
                       hintSize: 12,
                       hintText: "+91 98765 43210",
@@ -113,7 +117,7 @@ class EditProfileScreen extends StatelessWidget {
                     text("email_address".tr, fontWeight: FontWeight.w400, fontSize: 12, textColor: dark1BrownColor),
                     SizedBox(height: 10,),
                     CustomRoundTextField(
-                      controller: nameController,
+                      controller: emailController,
                       fillColor: white,
                       hintSize: 12,
                       hintText: "rajesh.kumar@bakery.com",
@@ -137,7 +141,7 @@ class EditProfileScreen extends StatelessWidget {
                     text("gst_number".tr, fontWeight: FontWeight.w400, fontSize: 12, textColor: dark1BrownColor),
                     SizedBox(height: 10,),
                     CustomRoundTextField(
-                      controller: nameController,
+                      controller: gstController,
                       fillColor: white,
                       hintSize: 12,
                       hintText: "29ABCDE1234F1Z5",
@@ -161,7 +165,7 @@ class EditProfileScreen extends StatelessWidget {
                     text("shop_address".tr, fontWeight: FontWeight.w400, fontSize: 12, textColor: dark1BrownColor),
                     SizedBox(height: 10,),
                     CustomRoundTextField(
-                      controller: nameController,
+                      controller: shopAddressController,
                       fillColor: white,
                       hintSize: 12,
                       hintText: "Shop No. 45, MG Road, Bangalore - 560001, Karnataka",

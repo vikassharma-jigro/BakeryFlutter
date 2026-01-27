@@ -186,14 +186,14 @@ class _WholeSalerHomescreenState extends State<WholeSalerHomescreen> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RetailersScreen()));
                           },
                       ),
-                      WholeSalerDashboard.DashBoardQuickActionCards(
-                        context,
-                        AppImages.locationIcon,
-                        "routes".tr,
-                          (){
-                            Get.to(Routesandmapping());
-                          },
-                      ),
+                      // WholeSalerDashboard.DashBoardQuickActionCards(
+                      //   context,
+                      //   AppImages.locationIcon,
+                      //   "routes".tr,
+                      //     (){
+                      //       Get.to(Routesandmapping());
+                      //     },
+                      // ),
                       WholeSalerDashboard.DashBoardQuickActionCards(
                         context,
                         AppImages.invoiceIcon,

@@ -70,7 +70,7 @@ class ConnectionStatus {
     //The connection status changed send out an update to all listeners
     if (previousConnection != hasConnection) {
       connectionChangeController.add(hasConnection);
-    }
+  }
 
     return hasConnection;
   }
