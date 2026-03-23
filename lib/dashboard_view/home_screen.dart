@@ -85,7 +85,7 @@ final ProductsController productsController = Get.put(ProductsController());
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             text(
-                              "2,450",
+                              "0",
                               textColor: darkBrownColor,
                               fontSize: 24,
                               fontFamily: FontFamily.interBold,

@@ -45,7 +45,25 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
   bool isValue = false;
   XFile? file;
   final AuthController authController = Get.put(AuthController());
+  void validateNumber() {
+    String value = textCodeController.text.trim();
 
+    if (value.isEmpty) {
+      showMessage("Field cannot be empty");
+    }
+    else if (!RegExp(r'^\d{10,16}$').hasMatch(value)) {
+      showMessage("Number must be 10 to 16 digits only");
+    }
+    else {
+      showMessage("Valid Number ✅");
+    }
+  }
+
+  void showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
 
 
@@ -397,6 +415,7 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(16),
                         ]
+
                     ),
                   ],
                 ),
@@ -727,11 +746,13 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
                     ShowAlertDialog().showErrorAlert(
                         context, "Please Enter text code");
                     return;
-                  }/*else if (!isValidTexcode(taxCode)) {
-                    ShowAlertDialog().showErrorAlert(
-                        context, "Invalid Texcode format");
-                    return;
-                  }*/ else {
+                  }else if (RegExp(r'^[a-zA-Z0-9 ]+$').hasMatch(textCodeController.text.trim())) {
+                    // Only Number case
+                    if (textCodeController.text.trim().length < 10 || textCodeController.text.trim().length > 16) {
+                      ShowAlertDialog().showErrorAlert(
+                          context, "text must be 10 to 16 digits");
+                    }
+                  }  else {
                     authController.getAds(context: context,
                         password: passwordController.text,
                         email: mailController.text,address: {
@@ -749,13 +770,7 @@ class _AddretailerscreenState extends State<Addretailerscreen>with ImagePickerMi
                         adharFrontPhoto: aadhaarFront,
                         shopImage: shopImage
                     ).then((value) {
-
-                     Navigator.pop(context);
-                     // authController.getRetailerListApi(
-                     //   context: context,
-                     //   status: "",
-                     //   search: "",
-                     // );
+                      Navigator.pop(context);
                     },);
                   }
                 },

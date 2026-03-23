@@ -33,7 +33,7 @@ class ProductWholesalerData {
   var count = 0;
   String? sellerId;
   String? sellerName;
-  int? price;
+   var price;
 
   ProductWholesalerData(
       {this.productId,

@@ -31,6 +31,7 @@ class AuthController extends GetxController {
       Map<String, dynamic> body = {
         "email": email,
         "password": password,
+        "device" : "mobile"
       };
       var response = await ApiBaseHelper().postApiCall(
         false,
@@ -93,8 +94,9 @@ class AuthController extends GetxController {
       "email": email,
       "password": password,
       "role":role,
+      "country":"",
       "phone": phone,
-      "department":department,
+      //"department":department,
       "status":status,
       "address": jsonEncode(address),
       //"joiningDate": joiningDate,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:bakerybrown/auth_view/login_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -67,7 +68,7 @@ class ApiBaseHelper {
       final parsedResponse = jsonDecode(response.body);
 
       // Error handling
-      if ([401, 422, 403, 404, 409, 500].contains(response.statusCode)) {
+      if ([422, 403, 404, 409, 500].contains(response.statusCode)) {
         Fluttertoast.showToast(
           msg: parsedResponse['message'] ?? "Something went wrong",
           toastLength: Toast.LENGTH_LONG,
@@ -75,6 +76,9 @@ class ApiBaseHelper {
           backgroundColor: blueColor,
           timeInSecForIosWeb: 1,
         );
+        return parsedResponse;
+      }else if ([401].contains(response.statusCode)) {
+       Get.off(LoginScreen());
         return parsedResponse;
       }
 
@@ -158,7 +162,7 @@ class ApiBaseHelper {
       final parsedResponse = jsonDecode(response.body);
 
       // Handle error codes
-      if ([401, 422, 403, 404, 409, 500].contains(response.statusCode)) {
+      if ([ 422, 403, 404, 409, 500].contains(response.statusCode)) {
         Fluttertoast.showToast(
           msg: parsedResponse['message'] ?? "Something went wrong",
           toastLength: Toast.LENGTH_LONG,
@@ -166,6 +170,9 @@ class ApiBaseHelper {
           backgroundColor: blueColor,
           timeInSecForIosWeb: 1,
         );
+        return parsedResponse;
+      }else if ([401].contains(response.statusCode)) {
+        Get.off(LoginScreen());
         return parsedResponse;
       }
 

@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             String? userEmail = authController.authModel.value.employeeData?.email;
 
                             if (role == null || role.isEmpty) {
-                              ShowAlertDialog().showErrorAlert(context, "Role not found!");
+                             // ShowAlertDialog().showErrorAlert(context, "Role not found!");
                               return;
                             }
 

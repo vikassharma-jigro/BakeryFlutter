@@ -63,7 +63,7 @@ class _OrderscreenState extends State<Orderscreen> {
                       Expanded(
                         child: WholeSalerDashboard.OrderScreenCards(
                           AppImages.cartIcon,
-                          "247",
+                          "0",
                           "orders".tr,
                           "total".tr,
                           dark1BrownColor,
@@ -72,7 +72,7 @@ class _OrderscreenState extends State<Orderscreen> {
                       Expanded(
                         child: WholeSalerDashboard.OrderScreenCards(
                           AppImages.catalogIcon,
-                          "89",
+                          "0",
                           "ready".tr,
                           "packed".tr,
                           Colors.blue,
@@ -86,7 +86,7 @@ class _OrderscreenState extends State<Orderscreen> {
                       Expanded(
                         child: WholeSalerDashboard.OrderScreenCards(
                           AppImages.truckSvgIcon,
-                          "156",
+                          "0",
                           "orders".tr,
                           "shipped".tr,
                           Colors.deepOrange,
@@ -95,7 +95,7 @@ class _OrderscreenState extends State<Orderscreen> {
                       Expanded(
                         child: WholeSalerDashboard.OrderScreenCards(
                           AppImages.checkSvgIcon,
-                          "189",
+                          "0",
                           "delivered".tr,
                           "complete".tr,
                           greenColor,

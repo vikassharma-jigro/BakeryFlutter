@@ -72,16 +72,16 @@ class WholeSalerBreadCatalog {
           // ),
           // Item Desc
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(6.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                      // padding: EdgeInsets.all(11),
-                      width: 80,
+                      width: 120,
                       child: text(
                         "${title}",
                         fontSize: 14,
@@ -123,7 +123,7 @@ class WholeSalerBreadCatalog {
                   fontFamily: FontFamily.interBold,
                   textColor: dark1BrownColor,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 4),
 
                 Container(
                   width: MediaQuery.sizeOf(context).width * 0.2,

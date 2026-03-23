@@ -3,7 +3,6 @@ import 'package:bakerybrown/app_utils/app_images.dart';
 import 'package:bakerybrown/app_utils/font_family.dart';
 import 'package:bakerybrown/getx_controller/product_controller.dart';
 import 'package:bakerybrown/wholeSaler/dashboard_view/cartview.dart';
-import 'package:bakerybrown/widgets/searchTextFiled.dart';
 import 'package:bakerybrown/widgets/wholeSalerBreadCatalog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,16 +19,25 @@ class Breadcatalog extends StatefulWidget {
 
 class _BreadcatalogState extends State<Breadcatalog> {
   var searchController = TextEditingController();
-  final ProductsController productsController = Get.put(ProductsController());
-  bool isSelected = false;
-  int selectedIndex = 0;
+  final ProductsController productsController =
+  Get.put(ProductsController());
+
+  int? totalQty = 0;
 
   @override
   void initState() {
     Future.microtask(() {
-      productsController.getProductsWholesalerListApi(context: context,sort: "",search: "");
-    },);
+      productsController.getProductsWholesalerListApi(
+          context: context, sort: "", search: "");
+    });
     super.initState();
+  }
+
+  // ✅ TOTAL CALCULATION METHOD
+  void calculateTotalQty() {
+    totalQty = productsController.productWholesalerList.value.data
+        ?.fold<int>(0, (sum, item) => sum + (item.count ?? 0)) ??
+        0;
   }
 
   @override
@@ -42,10 +50,10 @@ class _BreadcatalogState extends State<Breadcatalog> {
         title: Row(
           children: [
             InkWell(
-                onTap: (){
+                onTap: () {
                   Get.back();
                 },
-                child: Icon(Icons.arrow_back_ios,color: brownColor,)),
+                child: Icon(Icons.arrow_back_ios, color: brownColor)),
             Expanded(
               child: text("bread_catalog".tr,
                   isCentered: true,
@@ -58,21 +66,47 @@ class _BreadcatalogState extends State<Breadcatalog> {
         ),
         actions: [
           InkWell(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Cartview()));
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Cartview()));
             },
-              child: Image.asset(AppImages.cartIcon, width: 30, height: 30)),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 18.0),
+                  child: Image.asset(AppImages.cartIcon, width: 40, height: 40),
+                ),
+                Positioned(
+                  right: 10,
+                  top: 2,
+                  child: Container(
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: brownColor,
+                    ),
+                    child: text(
+                      "${totalQty ?? 0}",
+                      textColor: white,
+                      isCentered: true,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10,
+                      fontFamily: FontFamily.interBold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 15)
         ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            // Search Bar
+            /// 🔍 SEARCH
             TextField(
               controller: searchController,
               decoration: InputDecoration(
@@ -89,140 +123,72 @@ class _BreadcatalogState extends State<Breadcatalog> {
                 fillColor: softIvoryColor,
                 hintText: "search_products..".tr,
               ),
-              onChanged: (v){
-                productsController.getProductsWholesalerListApi(context: context,search: searchController.text,sort: "");
+              onChanged: (v) {
+                productsController.getProductsWholesalerListApi(
+                    context: context,
+                    search: searchController.text,
+                    sort: "");
               },
             ),
 
             SizedBox(height: 20),
 
-            // Filter Row
-            // SingleChildScrollView(
-            //   scrollDirection: Axis.horizontal,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //
-            //       buildFilter("A-Z", 0),
-            //       SizedBox(width: 10),
-            //
-            //       buildFilter("Low to High", 1),
-            //       SizedBox(width: 10),
-            //
-            //       buildFilter("High to Low", 2),
-            //       SizedBox(width: 10),
-            //
-            //       // Toggle Switch
-            //       // Container(
-            //       //   padding: EdgeInsets.symmetric(horizontal: 12),
-            //       //   decoration: BoxDecoration(
-            //       //     color: Color(0xFFE5E7EB),
-            //       //     borderRadius: BorderRadius.circular(21),
-            //       //   ),
-            //       //   child: Row(
-            //       //     children: [
-            //       //       text("in_stock".tr,
-            //       //           fontSize: 14,
-            //       //           fontWeight: FontWeight.w500,
-            //       //           textColor: blackColor),
-            //       //
-            //       //       SizedBox(width: 5),
-            //       //
-            //       //       Transform.scale(
-            //       //         scale: 0.7,
-            //       //         child: Switch(
-            //       //           value: isSelected,
-            //       //           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            //       //           activeColor: darkBrownColor,
-            //       //           activeTrackColor: darkBrownColor.withOpacity(0.4),
-            //       //           onChanged: (value) {
-            //       //             setState(() {
-            //       //               isSelected = value;
-            //       //             });
-            //       //           },
-            //       //         ),
-            //       //       ),
-            //       //     ],
-            //       //   ),
-            //       // ),
-            //     ],
-            //   ),
-            // ),
-
-           // SizedBox(height: 20),
-
+            /// 🛒 PRODUCT GRID
             Obx(() {
-                return Expanded(
-                  child: GridView.builder(
-                    itemCount: productsController.productWholesalerList.value.data?.length??0,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.64,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 12,
-                    ),
+              var productList =
+                  productsController.productWholesalerList.value.data;
 
-                    itemBuilder: (_, index) {
-                      var productData = productsController.productWholesalerList.value.data?[index];
-                      print("Ram>>>$productData");
-                      return WholeSalerBreadCatalog.itemCards(
-                        productData?.name??"",
-                        //productData?.stock.toString()??"",
-                        context,
-                            () {
-                          setState(() {
-                            productData!.count++;
-                          });
-                        },
-                            () {
-                          if (productData!.count > 0) {
-                            setState(() {
-                              productData.count--;
-                            });
-                          }
-                        },
-
-                            () {},
-                        "${productData?.quantityPerUnit.toString()??""} ${productData?.unit.toString()??""}",
-                        "$IP${productData?.img??""}",
-                        "€${productData?.price.toString()??""}",
-                        int.parse(productData?.count.toString()??""),
-                          productData?.productId.toString(),// LIVE COUNT
-                          productData?.sellerId.toString(),// LIVE COUNT
-                      );
-                    },
+              return Expanded(
+                child: GridView.builder(
+                  itemCount: productList?.length ?? 0,
+                  gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.64,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 12,
                   ),
-                );
-              }
-            ),
+                  itemBuilder: (_, index) {
+                    var productData = productList![index];
+
+                    return WholeSalerBreadCatalog.itemCards(
+                      productData.name ?? "",
+                      context,
+
+                      /// ➕ ADD
+                          () {
+                        setState(() {
+                          productData.count =
+                              (productData.count ?? 0) + 1;
+                          calculateTotalQty();
+                        });
+                      },
+
+                      /// ➖ REMOVE
+                          () {
+                        if ((productData.count ?? 0) > 0) {
+                          setState(() {
+                            productData.count =
+                                productData.count! - 1;
+                            calculateTotalQty();
+                          });
+                        }
+                      },
+
+                          () {},
+
+                      "${productData.quantityPerUnit ?? ""} ${productData.unit ?? ""}",
+                      "$IP${productData.img ?? ""}",
+                      "€${productData.price ?? ""}",
+                      productData.count ?? 0,
+                      productData.productId.toString(),
+                      productData.sellerId.toString(),
+                    );
+                  },
+                ),
+              );
+            }),
           ],
-        ),
-      ),
-    );
-  }
-
-  // Filter Button Builder
-  Widget buildFilter(String label, int index) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedIndex = index;
-        });
-        productsController.getProductsWholesalerListApi(context: context,search: "",
-            sort:selectedIndex==0?"":selectedIndex==1?"":"");
-
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: selectedIndex == index ? darkBrownColor : Color(0xFFE5E7EB),
-          borderRadius: BorderRadius.circular(21),
-        ),
-        child: text(
-          label,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          textColor: selectedIndex == index ? white : blackColor,
         ),
       ),
     );

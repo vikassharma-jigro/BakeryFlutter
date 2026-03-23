@@ -31,9 +31,9 @@ class RetailerAccountsModel {
 }
 
 class Summary {
-  int? pendingAmount;
-  int? paidAmount;
-  int? totalAmount;
+  var pendingAmount;
+  var paidAmount;
+  var totalAmount;
 
   Summary({this.pendingAmount, this.paidAmount, this.totalAmount});
 
